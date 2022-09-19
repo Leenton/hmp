@@ -1,3 +1,4 @@
+from time import sleep
 from MediaPlayer import MediaPlayer
 from ProgrammeHandler import get_programme_list
 import threading
@@ -16,14 +17,27 @@ def play_programmes():
 
 if __name__ == '__main__':
     
-    player = MediaPlayer() 
+    #player = MediaPlayer() 
 
     #Start levels handler that manages volume controls seperate to the main thread and interfaces with both and online and physical device to control levels.
-    levels_controll  = threading.Thread(target=level_controler, args=(player))
-    levels_controll.start()
+#    levels_controll  = threading.Thread(target=level_controler, args=(player))
+#    levels_controll.start()
 
     #Program obtains a generator of items to play, then loops through the iterable, until it reaches the end and stops. Many need to be threaded? 
-    programme_player  = threading.Thread(target=play_programmes, args=[])
-    programme_player.start()
+#    programme_player  = threading.Thread(target=play_programmes, args=[])
+#    programme_player.start()
+
+    queue = get_programme_list()
+    player = MediaPlayer()
+    print("executing")
+    for programme in queue:
+        if(programme):
+            print(programme)
+            sleep(1)
+            #player.play(programme)
+            
+            #print("looped!" + str(player.name) + "This is main thread")
+    print("FINISHED LOOP")
+
 
 

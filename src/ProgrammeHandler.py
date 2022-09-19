@@ -1,15 +1,6 @@
 import json
 from os import path
 
-#multiple queues? 
-
-#you make a queue which is a list of music, and songs, and depending on data about the queue, such as if the queue is set to repeat
-#either end the queue or return to the last time of the queue with each play.
-#We don't realisticly care what the real time order of the queue is so we can continue from where ever the queue left off when we resume. 
-
-#we can also interget events like time so particular queues always play at particular moments in time. 
-
-
 def get_current_queue() -> dict:
     #load the status.json file that contains infomation like what the current queue that should be playing is. 
     with open((path.relpath("storage/status.json")), 'r') as status:
@@ -24,14 +15,27 @@ def get_current_queue() -> dict:
     return current
 
 def update_queue(queue, new_queue):
+    print(queue)
     #overwrite the queue with the new updated que infomation
     with open(queue["path"], "w") as current_queue:
         json.dump(new_queue, current_queue)
 
-def get_interupt():
-    pass
+def get_interupt() -> None:
+    #open the interupts json and return the oldest item in the interupt queue. 
+    with open((path.relpath("storage/queues/interupts.json")), 'r') as interupt_queue:
+        interupts = json.load(interupt_queue)
+        interupts["path"] = "storage/queues/interupts.json"
+      
+    if(interupts["items"]):
+        interupt = interupts["items"][0]
+        del interupts["items"][0]
+        update_queue(interupts,interupts)
+    else:
+        interupt = None
 
-def get_next():
+    return interupt
+
+def get_next() -> dict:
     queue = get_current_queue()
 
     if(queue["type"] == "loop"):
@@ -42,12 +46,15 @@ def get_next():
             next_item = queue["items"][-1]
             queue["items"].insert(0,next_item)
             del queue["items"][-1]
-            update_queue((get_current_queue), queue)
+            update_queue(queue, queue)
 
     else:
-        next_item = queue["items"][-1]
-        del queue["items"][-1]
-        update_queue((get_current_queue), queue)
+        if(queue["items"]):
+            next_item = queue["items"][-1]
+            del queue["items"][-1]
+            update_queue(queue, queue)
+        else:
+            next_item = None
 
     return next_item
       
@@ -60,4 +67,5 @@ def get_programme_list():
             break
     return None
 
-print(get_current_queue())
+temp = get_programme_list()
+
