@@ -1,0 +1,6 @@
+[STORAGE]
+STORAGE=localhost
+
+[Server]
+PORT=443
+
