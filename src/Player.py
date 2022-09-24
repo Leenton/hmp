@@ -1,15 +1,12 @@
 import random
-from sre_constants import JUMP
-from time import sleep
-from turtle import position
 import vlc
-
 class Player:
     
     def __init__(self) -> None:
         self.name = random.randint(1000,10000000)
         self.media_player = vlc.MediaPlayer()
         self.current_item = None
+        self.state = {}
     
     def play(self,media: str) -> None:
         '''
@@ -24,6 +21,7 @@ class Player:
         Pauses the player and stops playing audio. 
         '''
         self.media_player.pause()
+        self.state["paused"] = True
     
     def resume(self) -> None:
         '''
@@ -31,6 +29,7 @@ class Player:
         '''
         if self.current_item and self.status()["playing"] == False:
             self.media_player.play()
+            self.state["paused"] = False
 
     def restart(self) -> None:
         '''
@@ -69,20 +68,20 @@ class Player:
         'length':int, Length of current media being played in miliseconds.
         'volume':int, Interger between 0 and 100 (inclusive) where 0 represents muted, and 100 is 0dB.
         '''
-        status = {}
 
         if self.media_player.is_playing():
-            status["playing"] = True
-            status["position"] = self.media_player.get_position()
-            status["length"] = self.media_player.get_length()
-            status["volume"] = self.media_player.audio_get_volume()
+            self.state["playing"] = True
+            self.state["position"] = self.media_player.get_position()
+            self.state["length"] = self.media_player.get_length()
+            self.state["volume"] = self.media_player.audio_get_volume()
+            self.state["paused"] = False
         else:
-            status["playing"] = False
-            status["position"] = None
-            status["length"] = 0
-            status["volume"] = self.media_player.audio_get_volume()
+            self.state["playing"] = False
+            self.state["position"] = None
+            self.state["length"] = 0
+            self.state["volume"] = self.media_player.audio_get_volume()
 
-        return status
+        return self.state
 
     def set_volume(self, level: int) -> None:
         '''
@@ -92,6 +91,3 @@ class Player:
         if not(level < 0 or level > 100):
             self.media_player.audio_set_volume(level)
             self.volume = level
-
-
-

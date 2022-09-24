@@ -106,5 +106,3 @@ def get_programme_list():
         else:
             break
     return None
-
-

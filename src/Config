@@ -2,5 +2,5 @@
 STORAGE=localhost
 
 [Server]
-PORT=443
+PORT=8341
 

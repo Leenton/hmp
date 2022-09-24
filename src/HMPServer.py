@@ -1,94 +1,109 @@
+import threading
+from queue import Queue
 from time import sleep
-from turtle import forward
-from MediaItem import MediaItem
 from Player import Player
 from ProgrammeHandler import get_programme_list
-import threading
-from LevelsHandler import level_controler
 
 
+def play_programmes(player_event_queue: Queue, player_status_queue: Queue):
+    #helper function to check player status. 
+    def get_player_status(q: Queue) -> dict:
+        '''
+        Returns the current state of the player. 
+        @return dict with keys:
+        'playing':Boolean,
+        'position':float, Percentage of total media played.
+        'length':int, Length of current media being played in miliseconds.
+        'volume':int, Interger between 0 and 100 (inclusive) where 0 represents muted, and 100 is 0dB.
+        '''
+        player_event_queue.put({'command': 'status', 'args': None})
+        sleep(0.1)
+        return player_status_queue.queue[0]
 
-import vlc
-from time import sleep
+    while(True):    
+        programme_queue = get_programme_list()
+        for programme in programme_queue:
+            if(programme):
+                #Tell the player to play the chosen programme.
+                player_event_queue.put({'command': 'play', 'args': programme['path']})
 
-# def play_programmes():
-#     queue = get_programme_list()
-#     player = MediaPlayer()
+                #Sleep for 0.5 seconds to allow the player to load the file form storage and begin playing. 
+                sleep(0.5)
 
-#     for programme in queue:
-#         if(programme):
-#             player.play(programme)
-            
-#             print("looped!" + str(player.name) + "This is main thread")
+                #while the player is playing the programme, sleep and wait for it to end.
+                while((get_player_status(player_status_queue))['playing'] or (get_player_status(player_status_queue))['paused'] ):
+                    sleep(1)
+        sleep(0.5)
 
+def PlayerEventHandler(event_queue: Queue, status_queue: Queue):
+    #get an instance of the player object we will be using to play programmes.
+    player = Player()
+
+    #Check the player event queue forever, execute the correct command for the coresponding event.
+    running = True
+    while(running):
+        event = event_queue.get()
+        event_queue.task_done()
+        if(event):
+            match (event['command']):
+                case 'play':
+                    player.play(event['args'])
+
+                case 'pause':
+                    player.pause()
+
+                case 'resume':
+                    player.resume()
+
+                case 'restart':
+                    player.restart()
+
+                case 'jump':
+                    player.jump(event['args'][0], event['args'][1])
+
+                case 'status':
+                    with lock:
+                        status = player.status()
+                        if(status_queue.empty()):
+                            status_queue.put(status)
+                        else:
+                            val = status_queue.get()
+                            status_queue.task_done()
+                            del val
+                            status_queue.put(status)
+                    
+                case 'status2':
+                    status = player.status()
+                    print(status)
+                    print(status_queue.queue[0])
+
+                case 'set_volume':
+                    player.set_volume(event['args'])
+                case 'kill':
+                    running = False
+        sleep(0.1)              
 
 if __name__ == '__main__':
     
-    #player = MediaPlayer() 
+    player_event_queue = Queue()
+    player_status = Queue(maxsize=1)
+    lock = threading.Lock()
+    
+    #player event hanlder that controls the player
+    player_thread = threading.Thread(target=PlayerEventHandler, args=(player_event_queue,player_status))
 
-    #Start levels handler that manages volume controls seperate to the main thread and interfaces with both and online and physical device to control levels.
-#    levels_controll  = threading.Thread(target=level_controler, args=(player))
-#    levels_controll.start()
+    #programme queue that controls what should be played.
+    programming_thread = threading.Thread(target=play_programmes, args=(player_event_queue,player_status))
 
-    #Program obtains a generator of items to play, then loops through the iterable, until it reaches the end and stops. Many need to be threaded? 
-#    programme_player  = threading.Thread(target=play_programmes, args=[])
-#    programme_player.start()
-    player = Player()
-    queue = get_programme_list()
-    print("executing")
-    for programme in queue:
-        if(programme):
-            print(programme)
-            player.play(programme["path"])
-            print(player.status())
-            print("Sleeping for 10 seconds")
-            sleep(0.01)
-            print(player.status())
-            sleep(10)
-            player.set_volume(20)
-            print(player.status())
-            player.jump(10000,"forward")
-            sleep(30)
-            
-            # player.pause()
-            # print("Stopping for 3 seconds")
-            # sleep(3)
-            # player.resume()
-            # print("Resuming for 15 seconds")
-            # sleep(15)
-            # player.pause()
-            # print("Stopping for 3 seconds")
-            # sleep(3)
-            # player.resume()
-            # print("Resuming for 5 seconds")
-            # sleep(5)
-            # print("Restarting the player")
-            # player.restart()
-            # print("Hold for 10 seconds to prove succesful")
-            # sleep(10)
-            # print("End of if statement, itterating to next item")
-            # if(player.status()["playing"]):
-            #     pass
+    
+    player_thread.start()
+    programming_thread.start()
+
+    while(True):
+        command = input("What do you want the player to do? ")
+        args = input("What args are you sending? ")
+        player_event_queue.put({'command':command, 'args': args})
 
 
-            #wave_obj = sa.WaveObject.from_wave_file("a file")
-            #play = wave_obj.play()
-            #play.stop()
-            #play.is_playing()
-            # sleep(20)
-            # print(programme["path"])
-            # player.play()
-            # sleep(50)
-            #player.play(programme)
-            
-            #print("looped!" + str(player.name) + "This is main thread")
-    print("FINISHED LOOP")
-
-    # media = vlc.MediaPlayer("storage/media/MV Jack Stauber - Buttercup.mp3")
-    # media.play()
-    # test = vlv.media==MediaPlayer()
-    # sleep(10)
-    # media.pause()
-    # sleep(5)
-    # media.play()
-    # sleep(20)
+    player_thread.join()
+    programming_thread.join()
