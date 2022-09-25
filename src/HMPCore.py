@@ -1,13 +1,16 @@
+import multiprocessing
 import threading
 from queue import Queue
 from time import sleep
 from Player import Player
 from ProgrammeHandler import get_programme_list
+import multiprocessing
+import HTTPHandler
 
 
 def play_programmes(player_event_queue: Queue, player_status_queue: Queue):
     #helper function to check player status. 
-    def get_player_status(q: Queue) -> dict:
+    def get_player_status() -> dict:
         '''
         Returns the current state of the player. 
         @return dict with keys:
@@ -31,11 +34,11 @@ def play_programmes(player_event_queue: Queue, player_status_queue: Queue):
                 sleep(0.5)
 
                 #while the player is playing the programme, sleep and wait for it to end.
-                while((get_player_status(player_status_queue))['playing'] or (get_player_status(player_status_queue))['paused'] ):
+                while((get_player_status())['playing'] or (get_player_status())['paused'] ):
                     sleep(1)
         sleep(0.5)
 
-def PlayerEventHandler(event_queue: Queue, status_queue: Queue):
+def player_event_handler(event_queue: Queue, status_queue: Queue):
     #get an instance of the player object we will be using to play programmes.
     player = Player()
 
@@ -45,24 +48,24 @@ def PlayerEventHandler(event_queue: Queue, status_queue: Queue):
         event = event_queue.get()
         event_queue.task_done()
         if(event):
-            match (event['command']):
-                case 'play':
-                    player.play(event['args'])
+            with lock:
+                match (event['command']):
+                    case 'play':
+                        player.play(event['args'])
 
-                case 'pause':
-                    player.pause()
+                    case 'pause':
+                        player.pause()
 
-                case 'resume':
-                    player.resume()
+                    case 'resume':
+                        player.resume()
 
-                case 'restart':
-                    player.restart()
+                    case 'restart':
+                        player.restart()
 
-                case 'jump':
-                    player.jump(event['args'][0], event['args'][1])
+                    case 'jump':
+                        player.jump(event['args'][0], event['args'][1])
 
-                case 'status':
-                    with lock:
+                    case 'status':
                         status = player.status()
                         if(status_queue.empty()):
                             status_queue.put(status)
@@ -71,18 +74,21 @@ def PlayerEventHandler(event_queue: Queue, status_queue: Queue):
                             status_queue.task_done()
                             del val
                             status_queue.put(status)
-                    
-                case 'status2':
-                    status = player.status()
-                    print(status)
-                    print(status_queue.queue[0])
+                        
+                    case 'status2':
+                        status = player.status()
+                        print(status)
+                        print(status_queue.queue[0])
 
-                case 'set_volume':
-                    player.set_volume(event['args'])
-                case 'kill':
-                    running = False
-        sleep(0.1)              
+                    case 'set_volume':
+                        player.set_volume(event['args'])
+                    case 'kill':
+                        running = False
+        sleep(0.05)              
 
+def physical_event_handler():
+    while True:
+        sleep(10)
 if __name__ == '__main__':
     
     player_event_queue = Queue()
@@ -90,20 +96,32 @@ if __name__ == '__main__':
     lock = threading.Lock()
     
     #player event hanlder that controls the player
-    player_thread = threading.Thread(target=PlayerEventHandler, args=(player_event_queue,player_status))
+    player_thread = threading.Thread(target=player_event_handler, args=(player_event_queue,player_status))
 
     #programme queue that controls what should be played.
     programming_thread = threading.Thread(target=play_programmes, args=(player_event_queue,player_status))
 
-    
+    #physical controler and io handler
+    physical_io_thread = threading.Thread(target=physical_event_handler, args=())
+
+    #http listner service to allow control of the media player and programme queue via http.
+    httplistener_thread = threading.Thread(target=HTTPHandler.start_httphandler, args=(player_event_queue,player_status))
+
     player_thread.start()
     programming_thread.start()
+    physical_io_thread.start()
+    httplistener_thread.start()
+    
+    #start the web server for the gui
+
+
+
+    player_thread.join()
+    programming_thread.join()
+    httplistener_thread.join()
+    physical_io_thread.join()
 
     while(True):
         command = input("What do you want the player to do? ")
         args = input("What args are you sending? ")
         player_event_queue.put({'command':command, 'args': args})
-
-
-    player_thread.join()
-    programming_thread.join()
