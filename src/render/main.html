@@ -5,12 +5,110 @@
 </head>
 <body>
 
-<h1>This is a Heading</h1>
-<p>This is a paragraph.</p>
+<h1>HMP</h1>
 
+<div class="player">
+    <p>IMAGE</p>
+    <p>SongName</p>
+    <p>Song Play Count</p>
+    <button id="pause">Pause</button>
+    <button id="resume">Resume</button>
+    <button id="restart">Restart</button>
+    <button id="back"><</button>
+    <button id="backback"><<</button>
+    <button id="forward">></button>
+    <button id="forwardforward">>></button>
+    <p>volume</p>
+</div>
+
+<div class="config">
+    <span>
+        Config stuff!!
+    </span>
+</div>
+
+<div class="library">
+    <button id="play">Play</button>
 </body>
 
 <script>
+    document.getElementById("play").addEventListener("click", play);
+    document.getElementById("pause").addEventListener("click", pause);
+    document.getElementById("resume").addEventListener("click", resume);
+    document.getElementById("restart").addEventListener("click", restart);
+    document.getElementById("back").addEventListener("click", back);
+    document.getElementById("backback").addEventListener("click", backback);
+    document.getElementById("forward").addEventListener("click", forward);
+    document.getElementById("forwardforward").addEventListener("click", forwardforward);
+
+    
+    //Interact with the audio player. 
+
+    async function player(player_command){
+        request_params = {command: player_command}
+        fetch('/api/player',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }, 
+            body: JSON.stringify(request_params)
+        }).then(response => {
+            console.log("successfully did the thing you asked leenton")
+        })
+    }
+
+
+    async function play(){
+        await player("play")
+        //other shit to change the state of the player so we can make the web page more dyanmic. 
+    }
+
+    async function resume(){
+        await player("resume")
+        //other shit to change the state of the player so we can make the web page more dyanmic. 
+    }
+
+    async function pause(){
+        await player("pause")
+        //other shit to change the state of the player so we can make the web page more dyanmic. 
+    }
+    async function restart(){
+        await player("restart")
+        //other shit to change the state of the player so we can make the web page more dyanmic. 
+    }
+    async function back(){
+        await player("back")
+        //other shit to change the state of the player so we can make the web page more dyanmic. 
+    }
+    async function backback(){
+        await player("backback")
+        //other shit to change the state of the player so we can make the web page more dyanmic. 
+    }
+    async function forward(){
+        await player("forward")
+        //other shit to change the state of the player so we can make the web page more dyanmic. 
+    }
+    async function forwardforward(){
+        await player("forwardforward")
+        //other shit to change the state of the player so we can make the web page more dyanmic. 
+    }
+
+
+
+    console.log("HMP v.0.0.1")
+
+    async function load_player(){
+        const resposne = await fetch('/api/test')
+        const result = resposne.json()
+        return result
+    }
+    function getCurrentURL () {
+        return window.location.href
+    }
+
+    
+
+
 
 </script>
 

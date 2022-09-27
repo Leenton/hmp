@@ -1,4 +1,5 @@
 from queue import Queue
+import queue
 import falcon
 from wsgiref.simple_server import make_server
 import json
@@ -20,20 +21,41 @@ def get_player_status() -> dict:
     player_event_queue.put({'command': 'status', 'args': None})
     return player_status_queue.queue[0]
 
-class main():
+class test():
     def on_get(self, req, resp):
         resp.status = falcon.HTTP_200
-        resp.body = "2"
+        resp.text = json.dumps({"Value": "wdkjjkqhwdkjqwqlwkjdhqwkljdhqwkljedhqwlkejdh"})
 
-    def on_post(self, req, resp):
-        print(req)   
-        resp.status = falcon.HTTP_200
-        resp.body = "2"
-
-class status(object):
+class player():
     def on_get(self, req,  resp):
         resp.status = falcon.HTTP_200
-        resp.body = json.dumps(get_player_status())
+        resp.text = json.dumps(get_player_status())
+    
+    def on_post(self, req, resp):
+        resp.status = falcon.HTTP_200
+        try:
+            match ((req.media['command']).lower()):
+                case 'play':
+                    player_event_queue.put({'command': 'play', 'args': None})
+                case 'pause':
+                    player_event_queue.put({'command': 'pause', 'args': None})
+                case 'resume':
+                    player_event_queue.put({'command': 'resume', 'args': None})
+                case 'restart':
+                    player_event_queue.put({'command': 'restart', 'args': None})
+                case 'back':
+                    player_event_queue.put({'command': 'jump', 'args': [5000, 'back']})
+                case 'backback':
+                    player_event_queue.put({'command': 'jump', 'args': [20000, 'back']})
+                case 'forward':
+                    player_event_queue.put({'command': 'jump', 'args': [5000, 'forward']})
+                case 'forwardforward':
+                    player_event_queue.put({'command': 'jump', 'args': [20000, 'forward']})
+            resp.text = json.dumps({"result": "success"})
+        except:
+            resp.text = json.dumps({"result": "failure"})
+
+
 
 class main(object):
     def on_get(self, req, resp):
@@ -44,8 +66,8 @@ class main(object):
             resp.body = f.read()
 
 handler = falcon.App()
-handler.add_route('/api/status', status())
-handler.add_route('/api/command', main())
+handler.add_route('/api/player', player())
+handler.add_route('/api/test', test())
 handler.add_route('/', main())
 
 def start_httphandler(event_queue: Queue,status_queue: Queue) -> None:
@@ -55,3 +77,5 @@ def start_httphandler(event_queue: Queue,status_queue: Queue) -> None:
     player_status_queue = status_queue
     with make_server('',80,handler) as httpd:
         httpd.serve_forever()
+
+#start_httphandler(queue.Queue(),queue.Queue())
