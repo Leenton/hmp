@@ -21,11 +21,6 @@ def get_player_status() -> dict:
     player_event_queue.put({'command': 'status', 'args': None})
     return player_status_queue.queue[0]
 
-class test():
-    def on_get(self, req, resp):
-        resp.status = falcon.HTTP_200
-        resp.text = json.dumps({"Value": "wdkjjkqhwdkjqwqlwkjdhqwkljdhqwkljedhqwlkejdh"})
-
 class player():
     def on_get(self, req,  resp):
         resp.status = falcon.HTTP_200
@@ -55,19 +50,32 @@ class player():
         except:
             resp.text = json.dumps({"result": "failure"})
 
-
-
+class programmer(object):
+    def on_get(self, req, resp):
+        resp.status = falcon.HTTP_200
+        resp.content_type = 'text/html'
+        resp.text = "hello"
+            
+class config(object):
+    def on_get(self, req, resp):
+        resp.status = falcon.HTTP_200
+        resp.content_type = 'text/html'
+        print(path.relpath("render/config.html"))
+        with open('/Users/leenton/python/hmp/src/render/config.html', 'r') as f:
+            resp.text = f.read()
+          
 class main(object):
     def on_get(self, req, resp):
         resp.status = falcon.HTTP_200
         resp.content_type = 'text/html'
         print(path.relpath("render/main.html"))
         with open('/Users/leenton/python/hmp/src/render/main.html', 'r') as f:
-            resp.body = f.read()
+            resp.text = f.read()
 
 handler = falcon.App()
 handler.add_route('/api/player', player())
-handler.add_route('/api/test', test())
+handler.add_route('/api/programmer', programmer())
+handler.add_route('/config', config())
 handler.add_route('/', main())
 
 def start_httphandler(event_queue: Queue,status_queue: Queue) -> None:
