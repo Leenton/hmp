@@ -6,6 +6,7 @@ from Player import Player
 from ProgrammeHandler import get_programme_list
 import multiprocessing
 import HTTPHandler
+import AudioEventHanlder
 
 
 def play_programmes(player_event_queue: Queue, player_status_queue: Queue):
@@ -25,6 +26,7 @@ def play_programmes(player_event_queue: Queue, player_status_queue: Queue):
 
     while(True):    
         programme_queue = get_programme_list()
+        
         for programme in programme_queue:
             if(programme):
                 #Tell the player to play the chosen programme.
@@ -74,11 +76,6 @@ def player_event_handler(event_queue: Queue, status_queue: Queue):
                             status_queue.task_done()
                             del val
                             status_queue.put(status)
-                        
-                    case 'status2':
-                        status = player.status()
-                        print(status)
-                        print(status_queue.queue[0])
 
                     case 'set_volume':
                         player.set_volume(event['args'])
@@ -86,15 +83,22 @@ def player_event_handler(event_queue: Queue, status_queue: Queue):
                         running = False
         sleep(0.05)              
 
+
+
 def physical_event_handler():
     while True:
         sleep(10)
+
 if __name__ == '__main__':
     
     player_event_queue = Queue()
     player_status = Queue(maxsize=1)
     lock = threading.Lock()
     
+
+    #audio event hanlder
+    audio_event_handler_thread = threading.Thread(target=AudioEventHanlder.start, args=(player_event_queue,player_status))
+
     #player event hanlder that controls the player
     player_thread = threading.Thread(target=player_event_handler, args=(player_event_queue,player_status))
 
@@ -107,6 +111,7 @@ if __name__ == '__main__':
     #http listner service to allow control of the media player and programme queue via http.
     httplistener_thread = threading.Thread(target=HTTPHandler.start_httphandler, args=(player_event_queue,player_status))
 
+    audio_event_handler_thread.start()
     player_thread.start()
     programming_thread.start()
     physical_io_thread.start()
@@ -125,3 +130,21 @@ if __name__ == '__main__':
         command = input("What do you want the player to do? ")
         args = input("What args are you sending? ")
         player_event_queue.put({'command':command, 'args': args})
+
+
+'''
+
+The idea is to have the program player be come and event driven action, we make a global event buss? 
+
+And we do different actions depending on the event that happens? 
+
+This could range from playing music, fetching the next item in the queue to play etc, we have one big event buss, and then in theory, 
+
+manging songs, playing songs, and handling physical io, becomes a single thread, The event buss thread managing all of these different actions. 
+
+Ok if I were to do that how would I even go about buidling this?
+
+other actions can  also be kicked off by the systems that have no relation. 
+
+
+'''

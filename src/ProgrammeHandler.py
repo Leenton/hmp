@@ -43,6 +43,7 @@ def get_interupt() -> dict:
     'type': 'music'|'weather'|'podcast'
     '''
     #open the interupts json and return the oldest item in the interupt queue. 
+
     with open((path.relpath("storage/queues/interupts.json")), 'r') as interupt_queue:
         interupts = json.load(interupt_queue)
         interupts["path"] = "storage/queues/interupts.json"
