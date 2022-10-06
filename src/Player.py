@@ -20,7 +20,7 @@ class Player:
         self.position = 0 
         self.length = 0 
         self.volume = 100
-        self.current_media = None
+        self.current_media = MediaItem("","")
     
     def play(self,media: MediaItem) -> None:
         '''
@@ -55,7 +55,7 @@ class Player:
         self.state = PlayerState.Inactive
         self.position = 0 
         self.length = 0 
-        self.current_media = None
+        self.current_media = MediaItem("","")
 
     def restart(self) -> None:
         '''
@@ -93,18 +93,14 @@ class Player:
         'length':int, Length of current media being played in miliseconds.
         'volume':int, Interger between 0 and 100 (inclusive) where 0 represents muted, and 100 is 0dB.
         '''
-
-        print("YE WAS CALLED")
         #figure out if we are playing, if we have just ended and etc. 
-        try:
-            if not self.media_player.is_playing() and self.state is PlayerState.Playing and self.position > 0.975:
-                self.state = PlayerState.Finished
-                self.position = 1
 
-            if self.state is PlayerState.Playing:
-                self.position = self.media_player.get_position()
-        except Exception:
-            print(traceback.format_exc())
+        if not self.media_player.is_playing() and self.state is PlayerState.Playing and self.position > 0.975:
+            self.state = PlayerState.Finished
+            self.position = 1
+
+        if self.state is PlayerState.Playing:
+            self.position = self.media_player.get_position()
 
         return {
             'state': self.state,
@@ -114,6 +110,8 @@ class Player:
             'media_id': self.current_media.id,
             'media_stats': self.current_media.stats,
         }
+
+
 
     def set_volume(self, level: int) -> None:
         '''

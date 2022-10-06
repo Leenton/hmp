@@ -6,13 +6,19 @@ class MediaItem():
         self.path = file_path
         self.stats = {"playcount": 0}
         #set obtain the name of the file.
-        self.file_name = file_path.split('/')[-1]
+        if(file_path):
+            self.file_name = file_path.split('/')[-1]
+        else: 
+            self.file_name = ''
 
         #set the name of the media item to that specified or just the name of the file without the file extension
         if(name):
             self.name = name
-        else: 
-            self.name = file_path.split('/')[-1][0:(self.file_name.rindex("."))]
+        else:
+            if(file_path):
+                self.name = file_path.split('/')[-1][0:(self.file_name.rindex("."))]
+            else:
+                self.name = ""
 
         #Set the media type to either Podcast,String
         match (media_type.lower()):

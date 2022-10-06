@@ -31,21 +31,21 @@ class player():
         try:
             match ((req.media['command']).lower()):
                 case 'play':
-                    player_event_queue.put({'command': 'play', 'args': None})
+                    player_event_queue.put({'message': 'play', 'data': None})
                 case 'pause':
-                    player_event_queue.put({'command': 'pause', 'args': None})
+                    player_event_queue.put({'message': 'pause', 'data': None})
                 case 'resume':
-                    player_event_queue.put({'command': 'resume', 'args': None})
+                    player_event_queue.put({'message': 'resume', 'data': None})
                 case 'restart':
-                    player_event_queue.put({'command': 'restart', 'args': None})
+                    player_event_queue.put({'message': 'restart', 'data': None})
                 case 'back':
-                    player_event_queue.put({'command': 'jump', 'args': [5000, 'back']})
+                    player_event_queue.put({'message': 'jump', 'data': [5000, 'back']})
                 case 'backback':
-                    player_event_queue.put({'command': 'jump', 'args': [20000, 'back']})
+                    player_event_queue.put({'message': 'jump', 'data': [20000, 'back']})
                 case 'forward':
-                    player_event_queue.put({'command': 'jump', 'args': [5000, 'forward']})
+                    player_event_queue.put({'message': 'jump', 'data': [5000, 'forward']})
                 case 'forwardforward':
-                    player_event_queue.put({'command': 'jump', 'args': [20000, 'forward']})
+                    player_event_queue.put({'message': 'jump', 'data': [20000, 'forward']})
             resp.text = json.dumps({"result": "success"})
         except:
             resp.text = json.dumps({"result": "failure"})
