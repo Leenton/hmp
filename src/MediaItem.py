@@ -1,10 +1,13 @@
 from os.path import exists
 
 class MediaItem():
-    def __init__(self,file_path: str, media_type: str, name = None, ) -> None:
+    def __init__(self,file_path: str, media_type: str, name = None, id = 123123123) -> None:
+        self.id = id
+        self.path = file_path
+        self.stats = {"playcount": 0}
         #set obtain the name of the file.
         self.file_name = file_path.split('/')[-1]
-        
+
         #set the name of the media item to that specified or just the name of the file without the file extension
         if(name):
             self.name = name

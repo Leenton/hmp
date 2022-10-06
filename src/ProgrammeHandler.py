@@ -1,5 +1,7 @@
 import json
 from os import path
+from pickle import FALSE
+from MediaItem import MediaItem
 
 def get_current_queue() -> dict:
     '''
@@ -103,10 +105,10 @@ def get_programme_list():
     while(True):
         item = get_next()
         if(item):
-            yield item
+            response = MediaItem(item["path"], 'music')
+            yield response
         else:
-            break
-    return None
+            yield False
 
 def insert_programme(queue, item):
     pass

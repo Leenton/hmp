@@ -78,7 +78,7 @@ handler.add_route('/api/programmer', programmer())
 handler.add_route('/config', config())
 handler.add_route('/', main())
 
-def start_httphandler(event_queue: Queue,status_queue: Queue) -> None:
+def start(event_queue: Queue,status_queue: Queue) -> None:
     global player_event_queue
     player_event_queue = event_queue
     global player_status_queue
