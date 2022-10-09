@@ -1,0 +1,45 @@
+{
+    "items":[
+        {
+            "id": 1,
+            "name": "MV Jack Stauber - Buttercup",
+            "cover": "",
+            "path": "storage/media/MV Jack Stauber - Buttercup.mp3",
+            "plays": 0,
+            "type": "music"
+        },
+        {
+            "id": 2,
+            "name": "Taylor swift 2022 discussion podcast",
+            "cover": "",
+            "path": "storage/media/MV Jack Stauber - Buttercup.mp3",
+            "plays": 0,
+            "type": "podcast"
+        }
+    ],
+
+    "lists":[
+        {
+            "id": "000",
+            "name": "Main",
+            "type": "Loop",
+            "order": "idc",
+            "interuptable": true,
+            "items": [
+
+            ],
+            "created": ""
+        },
+        {
+            "id": "001",
+            "name": "Interupts",
+            "type": "Loop",
+            "order": "strict",
+            "interuptable": false,
+            "items": [
+
+            ],
+            "created": ""
+        }
+    ]
+}

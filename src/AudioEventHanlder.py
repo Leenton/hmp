@@ -2,65 +2,62 @@ from queue import Queue
 from threading import Lock
 from Player import Player, PlayerState
 import asyncio
-from ProgrammeHandler import get_programme_list
+from MediaHandler import MediaItem, MediaLibrary, get_programme_list, MediaList
 
-def on_play(event):
+def on_play(event: MediaItem) -> None:
     player.play(event)
     #update anyone who is subscribed to this that the audio player has changed. 
     pass
 
-def on_pause():
+def on_pause() -> None:
     player.pause()
     #update anyone who is subscribed to this that the audio player has changed. 
     pass
 
-def on_resume():
+def on_resume() -> None:
     player.resume()
     #update anyone who is subscribed to this that the audio player has changed. 
     pass
 
-def on_restart():
+def on_restart() -> None:
     player.restart()
     #update anyone who is subscribed to this that the audio player has changed. 
     pass
 
-def on_set_volume(event):
+def on_set_volume(event) -> None:
     player.set_volume(event)
     #update anyone who is subscribed to this that the audio player has changed. 
     pass
 
-def on_jump(event):
+def on_jump(event: list) -> None:
     player.jump(event[0], event[1])
     #update anyone who is subscribed to this that the audio player has changed. 
     pass
 
-def on_media_end(media):
+def on_media_end(media) -> None:
     #update anyone who is subscribed to this that the audio player has changed. 
     pass
 
-def on_media_start():
+def on_media_start() -> None:
     #update anyone who is subscribed to this that the audio player has changed. 
     pass
 
-def on_play_next():
+def on_play_next() -> None:
     next_media = next(playlist)
     if(next_media):
         player.play(next_media)
     else:
         player.set_inactive()
-    #make an event to play, and send the next item from the generator
     
-def on_play_previous():
+def on_play_previous() -> None:
     #make an event to play and send the previous item from the generator
     pass
 
-def on_status_update(status):
+def on_status_update(status: dict) -> None:
     if(status['state'] is PlayerState.Finished or status['state'] is PlayerState.Inactive):
         if(status['state'] is PlayerState.Finished):
             event_queue.put({'message': 'media_end', 'data': status})
         event_queue.put({'message': 'play_next', 'data': None})
-    #raise Exception("Sorry, no numbers below zero")
-    #update anyone who is subscribed to this that the audio player has changed. 
 
 def on_kill():
     #update anyone who is subscribed to this that the audio player has changed. 
@@ -92,13 +89,16 @@ async def audio_event_loop(event_queue: Queue, lock: Lock):
         
 def start(audio_event_queue: Queue, lock: Lock):
     global player
+    global library
     global playlist
     global event_queue
 
-    event_queue = audio_event_queue
-    player = Player()
+    event_queue: Queue = audio_event_queue
+    player: Player = Player()
+    library: MediaLibrary = MediaLibrary()
+    #playlist = library.get_medialist(config['default_media_list'])
     playlist = get_programme_list()
-    item = next(playlist)
+    item: MediaItem = next(playlist)
     event_queue.put({"message": "play", "data": item })
     
     asyncio.run(audio_event_loop(event_queue, lock))
