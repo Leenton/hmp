@@ -180,21 +180,32 @@ class MediaLibrary():
 
     def insert(self, item: MediaItem) -> None:
         self.items.append(item)
-        pass
 
     def remove(self, item: MediaItem) -> None:
         self.items.remove(item)
         #remove a given Media
-        pass
 
     def new_list(self, name, media_list: MediaList):
         self.lists.append(media_list)
         #creates new media json files. and media lists we can manage later. 
-        pass
-    def del_list(self, media_list: MediaList):
+
+    def update_list(self, name, media_list: MediaList, ):
         self.lists.append(media_list)
+
+
+
+
+
+
+
+
+
         #creates new media json files. and media lists we can manage later. 
         pass
+
+    def del_list(self, media_list: MediaList):
+        self.lists.remove(media_list)
+        #creates new media json files. and media lists we can manage later. 
 
 
 
