@@ -94,11 +94,11 @@ def start(audio_event_queue: Queue, lock: Lock):
     global event_queue
 
     event_queue: Queue = audio_event_queue
-    player: Player = Player()
-    library: MediaLibrary = MediaLibrary()
+    player = Player()
+    library = MediaLibrary()
     #playlist = library.get_medialist(config['default_media_list'])
     playlist = get_programme_list()
-    item: MediaItem = next(playlist)
+    item = next(playlist)
     event_queue.put({"message": "play", "data": item })
     
     asyncio.run(audio_event_loop(event_queue, lock))

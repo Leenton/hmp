@@ -8,6 +8,7 @@ from MediaHandler import *
 if __name__ == '__main__':
     
     audio_events = Queue()
+    media_events = Queue()
     player_status = Queue(maxsize=1)
     lock = threading.Lock()
     library = MediaLibrary()
@@ -20,6 +21,9 @@ if __name__ == '__main__':
 
     #physical IO handler to handle any physical inputs we recieve from the real worl. 
     #physical_io_handler_thread = threading.Thread(target=PhysicalIOHandler.start, args=(audio_events,player_status))
+
+    #Media handler to handle loading of jsons, and . 
+    #media_handler_thread = threading.Thread(target=MediaHanlder.start, args=(media_events))
 
     audio_event_handler_thread.start()
     http_handler_thread.start()
