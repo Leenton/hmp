@@ -108,7 +108,9 @@ class Player:
             'volume': self.volume,
             'media_name': self.current_media.name,
             'media_id': self.current_media.id,
-            'media_stats': self.current_media.stats,
+            'plays': self.current_media.plays,
+            'rank': self.current_media.rank,
+            'runtime': self.current_media.runtime
         }
 
 

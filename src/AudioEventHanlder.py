@@ -2,12 +2,13 @@ from queue import Queue
 from threading import Lock
 from Player import Player, PlayerState
 import asyncio
-from MediaHandler import MediaItem, MediaLibrary, get_programme_list, MediaList
+from MediaHandler import MediaItem, MediaLibrary, MediaListType
+
+
 
 def on_play(event: MediaItem) -> None:
     player.play(event)
     #update anyone who is subscribed to this that the audio player has changed. 
-    pass
 
 def on_pause() -> None:
     player.pause()
@@ -65,10 +66,8 @@ def on_kill():
 
 async def status_hanlder(event_queue: Queue, lock: Lock):
     while True:
-        print("CHECKING STATUS")
         with lock:
             status = player.status()
-            print(status)
             event_queue.put({'message': 'status_update', 'data':status })
         await asyncio.sleep(0.5)
 
@@ -76,22 +75,17 @@ async def audio_event_loop(event_queue: Queue, lock: Lock):
     #create an event to play the first item we get form the play list iterator 
     task = asyncio.create_task(status_hanlder(event_queue, lock))
     while True:
-        print("IN WHILE") 
         #Check if a new event has been created, and if so process it acordingly. 
         try:
             event = event_queue.get(block=False)
             if(event):
-                print(event)
                 with lock:
-                    print(event)
                     if(event['data']):
                         eval('on_' + event['message'] + '(' + 'event["data"]' +')')
                     else: 
                         eval('on_' + event['message'] + '()')
         except:
-            print("WAITING")
-            await asyncio.sleep(1)
-            print("Waited")
+            await asyncio.sleep(0.1)
         
 def start(audio_event_queue: Queue, lock: Lock):
     global player
