@@ -65,19 +65,23 @@ def on_kill():
 
 async def status_hanlder(event_queue: Queue, lock: Lock):
     while True:
+        print("CHECKING STATUS")
         with lock:
             status = player.status()
+            print(status)
             event_queue.put({'message': 'status_update', 'data':status })
         await asyncio.sleep(0.5)
 
 async def audio_event_loop(event_queue: Queue, lock: Lock):
     #create an event to play the first item we get form the play list iterator 
     task = asyncio.create_task(status_hanlder(event_queue, lock))
-    while True: 
+    while True:
+        print("IN WHILE") 
         #Check if a new event has been created, and if so process it acordingly. 
         try:
             event = event_queue.get(block=False)
             if(event):
+                print(event)
                 with lock:
                     print(event)
                     if(event['data']):
@@ -85,7 +89,9 @@ async def audio_event_loop(event_queue: Queue, lock: Lock):
                     else: 
                         eval('on_' + event['message'] + '()')
         except:
-            await asyncio.sleep(0.01)
+            print("WAITING")
+            await asyncio.sleep(1)
+            print("Waited")
         
 def start(audio_event_queue: Queue, lock: Lock):
     global player
@@ -93,11 +99,13 @@ def start(audio_event_queue: Queue, lock: Lock):
     global playlist
     global event_queue
 
-    event_queue: Queue = audio_event_queue
+    event_queue = audio_event_queue
     player = Player()
     library = MediaLibrary()
-    #playlist = library.get_medialist(config['default_media_list'])
-    playlist = get_programme_list()
+    playlist = iter(library.get_media_list("main"))
+    
+    #playlist = get_programme_list()
+    
     item = next(playlist)
     event_queue.put({"message": "play", "data": item })
     

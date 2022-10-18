@@ -1,15 +1,12 @@
 
-import asyncio
 import json
 from os import path
 from os.path import exists
 import json
 from enum import Enum
 from hashlib import sha1
-from time import time
-from typing import Type
+from time import sleep, time
 from tinydb import TinyDB, Query, where
-import tinydb
 
 class MediaItemType(Enum):
     Music = 'music'
@@ -28,6 +25,7 @@ class MediaListOrder(Enum):
     Shuffle = 'shuffle'
 
 class MediaItem():
+
     def __init__(self, path ='', name = '', media_id = '', type = 'music', created = '', cover = '', plays = 0 , rank = 1) -> None:
         
         #if a path is not provided, create a blank MediaItem object. 
@@ -71,11 +69,11 @@ class MediaItem():
                 elif(self.type is MediaItemType.Effect):
                     self.cover = 'path to default effect icon'
 
-    def json_serialise(self, as_string = False) -> dict | str:
+    def serialise(self, as_string = False) -> dict | str:
         serialised = {
             'id' : self.id,
             'name' : self.name,
-            'type' : self.type,
+            'type' : self.type.value,
             'path' : self.path,
             'filename' : self.filename,
             'cover' : self.cover,
@@ -103,7 +101,7 @@ class MediaItem():
         self.created = serialised_media['created']
 
     def get_runtime(self, path):
-        print(path)
+        #print(path)
         #some logic to calculate how long a song might be in seconds. 
         return 100
 
@@ -136,7 +134,6 @@ class MediaList():
         return self
         
     def __next__(self) -> str:
-
         if(self.interuptable):
             interrupt = '1'
             #some how check for interupts from the Media Library
@@ -151,13 +148,19 @@ class MediaList():
                 self.items.pop(self.current_index)
 
             self.current_index+= 1
-            return media_item
+            #return media_item
         else:
-            self.current_index = 0 
+            if(self.type is MediaListType.Loop):
+                self.current_index = 0
+                media_item = self.items[self.current_index]
+                self.current_index+= 1
+                #return media_item                
             raise StopIteration
+        
+        return (MediaLibrary()).get_media_item(media_item)
 
     def insert(self, item: MediaItem) -> None:
-        self.items.append(item)
+        self.items.append(item.id)
 
     def remove(self, item: MediaItem) -> None:
         self.items.append(item)
@@ -165,11 +168,11 @@ class MediaList():
     def update(self, item: str | None) -> None:
         pass
 
-    def json_serialise(self, as_string = False) -> dict | str:
+    def serialise(self, as_string = False) -> dict | str:
         serialised = {
             'id' : self.id,
             'name' : self.name,
-            'type' : self.type,
+            'type' : self.type.value,
             'order' : self.order,
             'interuptable' : self.interuptable,
             'items' : self.items,
@@ -208,10 +211,20 @@ class MediaLibrary():
         self.lists = TinyDB('media_lists.json')
 
     def get_media_item(self, object_id: str) -> MediaItem:
-        return MediaItem(self.libaray.search({where('id') == object_id}))
+
+        media_item = (list(self.libaray.search(where('id') == object_id)))[0]
+        return MediaItem(
+            media_item['path'],
+            media_item['name'],
+            media_item['id'],
+            media_item['type'],
+            media_item['created'],
+            media_item['cover'],
+            media_item['rank'],
+            media_item['plays'])
         
     def insert_media_item(self, item: MediaItem) -> None:
-        self.libaray.insert()
+        self.libaray.insert(item.serialise())
     
     def update_media_item(self, item: MediaItem) -> None:
         self.libaray.update()
@@ -220,8 +233,15 @@ class MediaLibrary():
         self.libaray.remove()
 
     def get_media_list(self, object_id: str) -> MediaList:
-        self.lists.search()
-
+        media_list = (list(self.lists.search(where('id') == object_id)))[0]
+        return MediaList(
+            media_list['name'],
+            media_list['id'],
+            media_list['type'],
+            media_list['order'],
+            media_list['items'],
+            media_list['interuptable'],
+            media_list['created'])
 
     def insert_media_list(self, name, media_list: MediaList):
         self.lists.insert()
@@ -231,6 +251,28 @@ class MediaLibrary():
 
     def remove_media_list(self, media_list: MediaList) -> None:
         self.lists.remove()
+
+
+# library = MediaLibrary()
+
+# thing = library.get_media_list('123edasd21VA')
+# for thing in library.get_media_list('123edasd21VA'):
+#     print(library.get_media_item(thing).type)
+
+    
+#print(list(library.lists.all()))
+        # {
+        #     "id": 1,
+        #     "name": "MV Jack Stauber - Buttercup",
+        #     "cover": "",
+        #     "path": "storage/media/MV Jack Stauber - Buttercup.mp3",
+        #     "plays": 0,
+        #     "type": "music"
+        # },
+
+
+
+
 
 
 

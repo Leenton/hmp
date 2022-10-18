@@ -1,9 +1,7 @@
-from dbm.ndbm import library
 import threading
 from queue import Queue
 import HTTPHandler
 import AudioEventHanlder
-from MediaHandler import * 
 
 if __name__ == '__main__':
     
@@ -11,7 +9,6 @@ if __name__ == '__main__':
     media_events = Queue()
     player_status = Queue(maxsize=1)
     lock = threading.Lock()
-    library = MediaLibrary()
 
     #audio event hanlder
     audio_event_handler_thread = threading.Thread(target=AudioEventHanlder.start, args=(audio_events, lock))

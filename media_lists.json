@@ -1,0 +1,35 @@
+{
+    "_default": {
+        "1": {
+            "id": "000",
+            "name": "Main",
+            "type": "loop",
+            "order": "idc",
+            "interuptable": true,
+            "items": [],
+            "created": ""
+        },
+        "2": {
+            "id": "001",
+            "name": "Interupts",
+            "type": "loop",
+            "order": "strict",
+            "interuptable": false,
+            "items": [],
+            "created": ""
+        },
+        "3": {
+            "id": "main",
+            "name": "main test",
+            "type": "loop",
+            "order": "sequence",
+            "interuptable": false,
+            "items": [
+                "JKHwqd213sdH",
+                "PKCw1d918szV",
+                "VUHwxd2631dL"
+            ],
+            "created": "1666045608.388789"
+        }
+    }
+}

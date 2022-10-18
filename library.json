@@ -1,1 +1,40 @@
-{"_default": {"1": {"test": "Hello"}}}
+{
+    "_default": {
+        "1": {
+            "id": "JKHwqd213sdH",
+            "name": "MV Jack Stauber - Buttercup",
+            "type": "music",
+            "path": "storage/media/MV Jack Stauber - Buttercup.mp3",
+            "filename": "MV Jack Stauber - Buttercup.mp3",
+            "cover": "path to default music icon",
+            "runtime": 100,
+            "plays": 0,
+            "rank": 1,
+            "created": "1666042873.848278"
+        },
+        "2": {
+            "id": "PKCw1d918szV",
+            "name": "MV Jack Stauber - Buttercup",
+            "type": "podcast",
+            "path": "storage/media/MV Jack Stauber - Buttercup.mp3",
+            "filename": "MV Jack Stauber - Buttercup.mp3",
+            "cover": "path to default music icon",
+            "runtime": 100,
+            "plays": 0,
+            "rank": 1,
+            "created": "1666042873.848278"
+        },
+        "3": {
+            "id": "VUHwxd2631dL",
+            "name": "MV Jack Stauber - Buttercup",
+            "type": "weather",
+            "path": "storage/media/MV Jack Stauber - Buttercup.mp3",
+            "filename": "MV Jack Stauber - Buttercup.mp3",
+            "cover": "path to default music icon",
+            "runtime": 100,
+            "plays": 0,
+            "rank": 1,
+            "created": "1666042873.848278"
+        }
+    }
+}
