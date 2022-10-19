@@ -50,12 +50,30 @@ class player():
         except:
             resp.text = json.dumps({"result": "failure"})
 
-class programmer(object):
+class library(object):
     def on_get(self, req, resp):
         resp.status = falcon.HTTP_200
         resp.content_type = 'text/html'
         resp.text = "hello"
-            
+        #returns an array of all the json serialized items in the media library
+    def on_post(self, req, resp):
+        resp.status = falcon.HTTP_200
+        resp.content_type = 'text/html'
+        resp.text = "hello"
+        #Allows deletion of media, uploading of media, adding a given media item to a medialist.  
+
+class playlists(object):
+    def on_get(self, req, resp):
+        resp.status = falcon.HTTP_200
+        resp.content_type = 'text/html'
+        resp.text = "hello"
+        #returns an array of all the json serialized items in the media list
+    def on_post(self, req, resp):
+        resp.status = falcon.HTTP_200
+        resp.content_type = 'text/html'
+        resp.text = "hello"
+        #Allows deletion of media lists, creating new lists, removing items from a list. Setting playback types and etc.  
+
 class config(object):
     def on_get(self, req, resp):
         resp.status = falcon.HTTP_200
@@ -74,7 +92,7 @@ class main(object):
 
 handler = falcon.App()
 handler.add_route('/api/player', player())
-handler.add_route('/api/programmer', programmer())
+handler.add_route('/api/library', library())
 handler.add_route('/config', config())
 handler.add_route('/', main())
 

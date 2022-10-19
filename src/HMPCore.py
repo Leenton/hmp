@@ -34,9 +34,6 @@ if __name__ == '__main__':
     them to process. 
 
     '''
-
-
-
-
+    
     audio_event_handler_thread.join()
     http_handler_thread.join()
