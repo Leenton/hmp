@@ -1,3 +1,4 @@
+from ast import match_case
 from queue import Queue
 import queue
 import falcon
@@ -79,7 +80,7 @@ class config(object):
         resp.status = falcon.HTTP_200
         resp.content_type = 'text/html'
         print(path.relpath("render/config.html"))
-        with open('/Users/leenton/python/hmp/src/render/config.html', 'r') as f:
+        with open('/Users/leenton/python/hmp/src/web/config.html', 'r') as f:
             resp.text = f.read()
           
 class main(object):
@@ -87,13 +88,38 @@ class main(object):
         resp.status = falcon.HTTP_200
         resp.content_type = 'text/html'
         print(path.relpath("render/main.html"))
-        with open('/Users/leenton/python/hmp/src/render/main.html', 'r') as f:
+        with open('/Users/leenton/python/hmp/src/web/main.html', 'r') as f:
             resp.text = f.read()
+
+class resources(object):
+    def on_get(self,req, resp, folder, filename):
+        resp.status = falcon.HTTP_200
+        #logic to check what the file extension is and to set the correct header based on the file type. 
+        file_format = (filename.split('.'))[-1]
+        match (file_format):
+            case 'css':
+                resp.content_type = 'text/css'
+            case 'htm':
+                resp.content_type = 'text/html'
+            case 'html':
+                resp.content_type = 'text/html'
+            case 'jpg':
+                resp.content_type = 'image/jpg'
+            case 'png':
+                resp.content_type = 'image/png'
+            case 'gif':
+                resp.content_type = 'image/gif'
+            case 'ttf':
+                resp.content_type = 'image/ttf'
+        with open('/Users/leenton/python/hmp/src/web/rsc/' + folder + '/' + filename, 'rb') as f:
+            resp.text = f.read()
+        
 
 handler = falcon.App()
 handler.add_route('/api/player', player())
 handler.add_route('/api/library', library())
 handler.add_route('/config', config())
+handler.add_route('/rsc/{folder}/{filename}', resources())
 handler.add_route('/', main())
 
 def start(event_queue: Queue,status_queue: Queue) -> None:
@@ -104,4 +130,4 @@ def start(event_queue: Queue,status_queue: Queue) -> None:
     with make_server('',80,handler) as httpd:
         httpd.serve_forever()
 
-#start_httphandler(queue.Queue(),queue.Queue())
+start(queue.Queue(),queue.Queue())

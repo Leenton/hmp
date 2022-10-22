@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>HMP</title>
+<link href="./rsc/css/main.css" type="text/css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Walter+Turncoat" rel="stylesheet">
+<link rel="shortcut icon" href="{{ url_for('static', filename='/assets/favicon.ico') }}">
+<!--
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<meta name="theme-color" content="#bb3333" />
+    -->
+</head>
+<body>
+
+
+<div class="main-container">
+    <ul class="container">
+        <li class="tabs" id="library">Library</li>
+        <li class="tabs" id="playlist">Playlist</li>
+        <li class="tabs" id="scheduling">Scheduling</li>
+    </ul>
+    <div class="container content">
+        <div class="item">
+            <div class="item-details">
+                <p>Taylor swift red</p>
+                <p>Play Count: 11</p>
+            </div>
+            <div class="item-buttons">
+                <button id="pause">Play</button>
+                <button id="pause">Remove</button>
+                <button id="pause">Edit</button>
+            </div>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+        <div class="item">
+            <p>Taylor swift red</p>
+        </div>
+    </div>
+
+    
+</div>
+
+<div class="player-small">
+    <p>SongName</p>
+    <p>Song Play Count</p>
+    <button id="pause">Play/Resume</button>
+    <button id="restart">Restart</button>
+    <button id="back"><</button>
+    <button id="backback"><<</button>
+    <button id="forward">></button>
+    <button id="forwardforward">>></button>
+    <div class="progressbar">
+        <p>[========&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]</p>
+    </div>
+    <input type="range" min="0" max="100" id="volume">
+
+</div>
+
+<!--
+<div class="player-big">
+    <p>IMAGE</p>
+    <p>SongName</p>
+    <p>Song Play Count</p>
+    <button id="play">Play</button>
+    <button id="pause">Pause</button>
+    <button id="resume">Resume</button>
+    <button id="restart">Restart</button>
+    <button id="back"><</button>
+    <button id="backback"><<</button>
+    <button id="forward">></button>
+    <button id="forwardforward">>></button>
+    <input type="range" min="0" max="100" id="volume">
+</div>
+-->
+
+<div class="action_button">
+    <button id="action">Action</button>
+</div>
+
+
+
+
+<script>
+    //colour inversion with a dark mode button, or detector in the player. 
+
+    document.getElementById("play").addEventListener("click", play);
+    document.getElementById("pause").addEventListener("click", pause);
+    document.getElementById("resume").addEventListener("click", resume);
+    document.getElementById("restart").addEventListener("click", restart);
+    document.getElementById("back").addEventListener("click", back);
+    document.getElementById("backback").addEventListener("click", backback);
+    document.getElementById("forward").addEventListener("click", forward);
+    document.getElementById("forwardforward").addEventListener("click", forwardforward);
+
+    
+    //Interact with the audio player. 
+
+    async function player(player_command){
+        request_params = {command: player_command}
+        fetch('/api/player',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }, 
+            body: JSON.stringify(request_params)
+        }).then(response => {
+            console.log("successfully did the thing you asked leenton")
+        })
+    }
+
+
+    async function play(){
+        await player("play")
+        //other shit to change the state of the player so we can make the web page more dyanmic. 
+    }
+
+    async function resume(){
+        await player("resume")
+        //other shit to change the state of the player so we can make the web page more dyanmic. 
+    }
+
+    async function pause(){
+        await player("pause")
+        //other shit to change the state of the player so we can make the web page more dyanmic. 
+    }
+    async function restart(){
+        await player("restart")
+        //other shit to change the state of the player so we can make the web page more dyanmic. 
+    }
+    async function back(){
+        await player("back")
+        //other shit to change the state of the player so we can make the web page more dyanmic. 
+    }
+    async function backback(){
+        await player("backback")
+        //other shit to change the state of the player so we can make the web page more dyanmic. 
+    }
+    async function forward(){
+        await player("forward")
+        //other shit to change the state of the player so we can make the web page more dyanmic. 
+    }
+    async function forwardforward(){
+        await player("forwardforward")
+        //other shit to change the state of the player so we can make the web page more dyanmic. 
+    }
+
+
+
+    console.log("HMP v.0.0.1")
+
+    async function load_player(){
+        const resposne = await fetch('/api/test')
+        const result = resposne.json()
+        return result
+    }
+    function getCurrentURL () {
+        return window.location.href
+    }
+
+    
+
+
+
+</script>
+
+</html>

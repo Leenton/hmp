@@ -1,0 +1,69 @@
+@font-face {
+    font-family: DejaVuSansMono;
+    src: url(../fonts/DejaVuSansMono.ttf);
+}
+@font-face {
+    font-family: DejaVuSansMonoBold;
+    src: url(../fonts/DejaVuSansMono-Bold.ttf);
+}
+
+html{
+    scroll-behavior: smooth;
+}
+body{
+    font-family: DejaVuSansMono;
+    background-color: #1f1f1f;
+    background-attachment: fixed; 
+    color: white;
+}
+
+.main-container{
+    max-width: 1200px;
+    margin-inline: auto;
+}
+
+.container{
+
+    padding-inline: 1rem;
+    padding-bottom: 1rem;
+}
+
+.content{
+    overflow-y: scroll;
+    height: 1000px;
+}
+
+.item{
+    display: flex;
+    width: 100%;
+}
+.item-details{
+    display:  flex;
+    width: 50%;
+    justify-content: space-between;
+}
+
+.item :hover{
+    background-color: #353535;;
+}
+
+ul{
+    margin-top: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin-inline: auto;
+    text-align: center;
+    padding-left: 0%;
+}
+
+li.tabs {
+    display: inline-block;
+    margin: 0%;
+    font-size: 2.5em;
+}
+
+#library{
+    text-decoration: underline;
+}
