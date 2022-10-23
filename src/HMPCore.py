@@ -14,7 +14,7 @@ if __name__ == '__main__':
     audio_event_handler_thread = threading.Thread(target=AudioEventHanlder.start, args=(audio_events, lock))
     
     #http listner service to allow control of the media player and programme queue via http.
-    http_handler_thread = threading.Thread(target=HTTPHandler.start, args=(audio_events,player_status))
+    http_handler_thread = threading.Thread(target=HTTPHandler.start, args=(audio_events,player_status, lock))
 
     #physical IO handler to handle any physical inputs we recieve from the real worl. 
     #physical_io_handler_thread = threading.Thread(target=PhysicalIOHandler.start, args=(audio_events,player_status))

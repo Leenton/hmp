@@ -26,6 +26,9 @@ class player(object):
         self.player_event = player_events
         self.status = status
 
+    def on_websocket(self, req, ws):
+        pass
+
     def on_get(self, req,  resp):
         resp.status = HTTP_200
         resp.text = json.dumps(())

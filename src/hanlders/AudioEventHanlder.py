@@ -64,6 +64,7 @@ def on_kill():
     #update anyone who is subscribed to this that the audio player has changed. 
     pass
 
+
 async def status_hanlder(event_queue: Queue, lock: Lock):
     while True:
         with lock:
@@ -85,7 +86,7 @@ async def audio_event_loop(event_queue: Queue, lock: Lock):
                     else: 
                         eval('on_' + event['message'] + '()')
         except:
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(0.01)
         
 def start(audio_event_queue: Queue, lock: Lock):
     global player
@@ -94,8 +95,11 @@ def start(audio_event_queue: Queue, lock: Lock):
     global event_queue
 
     event_queue = audio_event_queue
-    player = Player()
-    library = MediaLibrary()
+    
+    with lock:
+        player = Player()
+        library = MediaLibrary()
+    
     playlist = iter(library.get_media_list("main"))
     
     #playlist = get_programme_list()
