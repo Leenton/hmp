@@ -17,64 +17,9 @@
     <ul class="container">
         <li class="tabs" id="library">Library</li>
         <li class="tabs" id="playlists">Playlists</li>
-        <li class="tabs" id="scheduling">Scheduling</li>
+        <li class="tabs" id="scheduler">Scheduler</li>
     </ul>
-    <div class="container content">
-        <div class="item">
-            <div class="item-details">
-                <p>Taylor swift red</p>
-            </div>
-            <div class="item-actions">
-                <p>Play Count: 11</p>
-                <button id="pause">Play</button>
-                <button id="pause">Remove</button>
-                <button id="pause">Edit</button>
-            </div>
-        </div>
-        <div class="item">
-            <div class="item-details">
-                <p>Taylor swift red</p>
-            </div>
-            <div class="item-actions">
-                <p>Play Count: 11</p>
-                <button id="pause">Play</button>
-                <button id="pause">Remove</button>
-                <button id="pause">Edit</button>
-            </div>
-        </div>
-        <div class="item">
-            <div class="item-details">
-                <p>Taylor swift red</p>
-            </div>
-            <div class="item-actions">
-                <p>Play Count: 11</p>
-                <button id="pause">Play</button>
-                <button id="pause">Remove</button>
-                <button id="pause">Edit</button>
-            </div>
-        </div>
-        <div class="item">
-            <div class="item-details">
-                <p>Taylor swift red</p>
-            </div>
-            <div class="item-actions">
-                <p>Play Count: 11</p>
-                <button id="pause">Play</button>
-                <button id="pause">Remove</button>
-                <button id="pause">Edit</button>
-            </div>
-        </div>
-        <div class="item">
-            <div class="item-details">
-                <p>Taylor swift red</p>
-            </div>
-            <div class="item-actions">
-                <p>Play Count: 11</p>
-                <button id="pause">Play</button>
-                <button id="pause">Remove</button>
-                <button id="pause">Edit</button>
-            </div>
-        </div>
+    <div class="container content" id="content_container">
     </div>
 </div>
 
@@ -123,7 +68,7 @@
 
     document.getElementById("library").addEventListener("click", load_library);
     document.getElementById("playlists").addEventListener("click", load_playlists);
-    document.getElementById("scheduling").addEventListener("click", load_scheduling);
+    document.getElementById("scheduler").addEventListener("click", load_scheduler);
     //document.getElementById("play").addEventListener("click", play);
     document.getElementById("pause").addEventListener("click", pause);
     //document.getElementById("resume").addEventListener("click", resume);
@@ -199,21 +144,89 @@
             headers: {
                 'Content-Type': 'application/json',
             }, 
-            body: JSON.stringify(request_params)
-        }).then(response => {
-            console.log("successfully did the thing you asked leenton")
-        })
+        }).then(
+            response => response.json()
+        ).then(
+            data => {
+                //empty out the  content container div, then insert each item we got in our web request.
+                
+                let container = document.getElementById("content_container");
+                container.innerHTML = '';
+                data.media.forEach(item => {
+                    let new_item = document.createElement('div')
+                    new_item.classList.add('item')
+                    new_item.innerHTML = [
+                        `<div class="item-details">
+                            <p>`, item.name, `</p>
+                        </div>
+                        <div class="item-actions">
+                            <p>Play Count:`, item.plays, `</p>
+                            <p>Runtime:`, item.runtime, `</p>
+                            <p>Type:`, item.type, `</p>
+                            <button id="play">Play</button>
+                            <button id="remove">Remove</button>
+                            <button id="edit">Edit</button>
+                        </div>`].join("")
+                    container.appendChild(new_item)
+                })
+            }
+        )
     }
     async function load_playlists(){
-        console.log("TEST2")
+        fetch('/api/playlists',{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }, 
+        }).then(
+            response => response.json()
+        ).then(
+            data => {
+                //empty out the  content container div, then insert each item we got in our web request.
+                
+                let container = document.getElementById("content_container");
+                container.innerHTML = '';
+                data.media_lists.forEach(list => {
+                    let new_list = document.createElement('div')
+                    new_list.classList.add('list')
+                    new_list.innerHTML = [
+                        `<div class="list-details">
+                            <p>`, list.name, `</p>
+                        </div>
+                        <div class="list-actions">
+                            <p>Type:`, list.type, `</p>
+                            <p>Accepts Interupts:`, list.interuptable, `</p>
+                            <button id="play">Play</button>
+                            <button id="remove">Remove</button>
+                            <button id="edit">Edit</button>
+                        </div>`].join("")
+                    container.appendChild(new_list)
+                })
+            }
+        )
     }
-    async function load_scheduling(){
-        console.log("TEST23")
+    async function load_scheduler(){
+        fetch('/api/scheduler',{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }, 
+        }).then(
+            response => response.json()
+        ).then(
+            data => {
+                //empty out the  content container div, then insert each item we got in our web request.
+                let container = document.getElementById("content_container");
+                container.innerHTML = '<p>Sorry! Nothing here yet!</p>';
+                console.log(data)
+            }
+        )
     }
     
 
 
     console.log("HMP v.0.0.1")
+    load_library()
 
 
 </script>
