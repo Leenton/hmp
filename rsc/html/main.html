@@ -4,8 +4,8 @@
 <title>HMP</title>
 <link href="./rsc/css/main.css" type="text/css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Walter+Turncoat" rel="stylesheet">
-<link rel="shortcut icon" href="{{ url_for('static', filename='/assets/favicon.ico') }}">
 <!--
+<link rel="shortcut icon" href="{{ url_for('static', filename='/assets/favicon.ico') }}">
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <meta name="theme-color" content="#bb3333" />
     -->
@@ -16,141 +16,66 @@
 <div class="main-container">
     <ul class="container">
         <li class="tabs" id="library">Library</li>
-        <li class="tabs" id="playlist">Playlist</li>
+        <li class="tabs" id="playlists">Playlists</li>
         <li class="tabs" id="scheduling">Scheduling</li>
     </ul>
     <div class="container content">
         <div class="item">
             <div class="item-details">
                 <p>Taylor swift red</p>
-                <p>Play Count: 11</p>
             </div>
-            <div class="item-buttons">
+            <div class="item-actions">
+                <p>Play Count: 11</p>
                 <button id="pause">Play</button>
                 <button id="pause">Remove</button>
                 <button id="pause">Edit</button>
             </div>
         </div>
         <div class="item">
-            <p>Taylor swift red</p>
+            <div class="item-details">
+                <p>Taylor swift red</p>
+            </div>
+            <div class="item-actions">
+                <p>Play Count: 11</p>
+                <button id="pause">Play</button>
+                <button id="pause">Remove</button>
+                <button id="pause">Edit</button>
+            </div>
         </div>
         <div class="item">
-            <p>Taylor swift red</p>
+            <div class="item-details">
+                <p>Taylor swift red</p>
+            </div>
+            <div class="item-actions">
+                <p>Play Count: 11</p>
+                <button id="pause">Play</button>
+                <button id="pause">Remove</button>
+                <button id="pause">Edit</button>
+            </div>
         </div>
         <div class="item">
-            <p>Taylor swift red</p>
+            <div class="item-details">
+                <p>Taylor swift red</p>
+            </div>
+            <div class="item-actions">
+                <p>Play Count: 11</p>
+                <button id="pause">Play</button>
+                <button id="pause">Remove</button>
+                <button id="pause">Edit</button>
+            </div>
         </div>
         <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
-        </div>
-        <div class="item">
-            <p>Taylor swift red</p>
+            <div class="item-details">
+                <p>Taylor swift red</p>
+            </div>
+            <div class="item-actions">
+                <p>Play Count: 11</p>
+                <button id="pause">Play</button>
+                <button id="pause">Remove</button>
+                <button id="pause">Edit</button>
+            </div>
         </div>
     </div>
-
-    
 </div>
 
 <div class="player-small">
@@ -196,9 +121,12 @@
 <script>
     //colour inversion with a dark mode button, or detector in the player. 
 
-    document.getElementById("play").addEventListener("click", play);
+    document.getElementById("library").addEventListener("click", load_library);
+    document.getElementById("playlists").addEventListener("click", load_playlists);
+    document.getElementById("scheduling").addEventListener("click", load_scheduling);
+    //document.getElementById("play").addEventListener("click", play);
     document.getElementById("pause").addEventListener("click", pause);
-    document.getElementById("resume").addEventListener("click", resume);
+    //document.getElementById("resume").addEventListener("click", resume);
     document.getElementById("restart").addEventListener("click", restart);
     document.getElementById("back").addEventListener("click", back);
     document.getElementById("backback").addEventListener("click", backback);
@@ -220,7 +148,6 @@
             console.log("successfully did the thing you asked leenton")
         })
     }
-
 
     async function play(){
         await player("play")
@@ -257,10 +184,6 @@
         //other shit to change the state of the player so we can make the web page more dyanmic. 
     }
 
-
-
-    console.log("HMP v.0.0.1")
-
     async function load_player(){
         const resposne = await fetch('/api/test')
         const result = resposne.json()
@@ -270,8 +193,27 @@
         return window.location.href
     }
 
+    async function load_library(){
+        fetch('/api/library',{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }, 
+            body: JSON.stringify(request_params)
+        }).then(response => {
+            console.log("successfully did the thing you asked leenton")
+        })
+    }
+    async function load_playlists(){
+        console.log("TEST2")
+    }
+    async function load_scheduling(){
+        console.log("TEST23")
+    }
     
 
+
+    console.log("HMP v.0.0.1")
 
 
 </script>

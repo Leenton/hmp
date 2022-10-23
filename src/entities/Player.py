@@ -1,7 +1,9 @@
 import vlc
 from enum import Enum
-from HTTPHandler import player
-from MediaHandler import MediaItem
+from hanlders.HTTPHandler import player
+from entities.Media import MediaItem
+
+
 from time import sleep
 import traceback
 import sys

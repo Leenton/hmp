@@ -1,4 +1,4 @@
-import Player
+from entities.Player import Player
 
 def get_change():
     #Listens to the webpage and listens to physical hardware to no how to change the volume. 

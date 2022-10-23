@@ -1,7 +1,7 @@
 import threading
 from queue import Queue
-import HTTPHandler
-import AudioEventHanlder
+import hanlders.HTTPHandler as HTTPHandler
+import hanlders.AudioEventHanlder as AudioEventHanlder
 
 if __name__ == '__main__':
     

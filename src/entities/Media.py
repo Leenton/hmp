@@ -2,11 +2,10 @@
 import json
 from os import path
 from os.path import exists
-import json
 from enum import Enum
 from hashlib import sha1
-from time import sleep, time
-from tinydb import TinyDB, Query, where
+from time import  time
+from tinydb import TinyDB, where
 
 class MediaItemType(Enum):
     Music = 'music'
@@ -192,7 +191,6 @@ class MediaList():
         self.interuptable = serialised_list['interuptable']
         self.items = serialised_list['items']
         self.created = serialised_list['created']
-
 
 class MediaLibrary():
     '''

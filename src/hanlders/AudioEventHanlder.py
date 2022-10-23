@@ -1,8 +1,8 @@
 from queue import Queue
 from threading import Lock
-from Player import Player, PlayerState
+from entities.Player import Player, PlayerState
 import asyncio
-from MediaHandler import MediaItem, MediaLibrary, MediaListType
+from entities.Media import MediaItem, MediaLibrary
 
 
 
