@@ -26,7 +26,7 @@ def start(event_queue: Queue,status_queue: Queue, lock: Lock) -> None:
         media_library = MediaLibrary()
 
 
-    handler.add_route('/api/player', player(event_queue,status_queue))
+    handler.add_route('/api/player', player(event_queue,status_queue, media_library))
     handler.add_route('/api/library', library(media_library))
     handler.add_route('/api/playlists', playlists(media_library))
     handler.add_route('/api/scheduler', scheduler(media_library))

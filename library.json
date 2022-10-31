@@ -35,6 +35,18 @@
             "plays": 0,
             "rank": 1,
             "created": "1666042873.848278"
+        },
+        "4": {
+            "id": "P1Iwjd719pmZ",
+            "name": "Hello internet",
+            "type": "podcast",
+            "path": "storage/media/H.I. #36 Bear O'Clock.mp3",
+            "filename": "MV Jack Stauber - Buttercup.mp3",
+            "cover": "path to default music icon",
+            "runtime": 276000,
+            "plays": 0,
+            "rank": 1,
+            "created": "1666042873.848278"
         }
     }
 }

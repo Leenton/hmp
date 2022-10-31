@@ -21,6 +21,8 @@ class resources(object):
                 resp.content_type = 'image/gif'
             case 'ttf':
                 resp.content_type = 'image/ttf'
+            case 'js':
+                resp.content_type = 'text/javascript'
         with open('/Users/leenton/python/hmp/rsc/' + folder + '/' + filename, 'rb') as f:
             resp.text = f.read()
         

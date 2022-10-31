@@ -10,18 +10,31 @@
 <meta name="theme-color" content="#bb3333" />
     -->
 </head>
+<script src="./rsc/js/main.js"></script>
 <body>
-
-
+<h1 class="title">HMP</h1>
 <div class="main-container">
-    <ul class="container">
-        <li class="tabs" id="library">Library</li>
-        <li class="tabs" id="playlists">Playlists</li>
-        <li class="tabs" id="scheduler">Scheduler</li>
-    </ul>
-    <div class="container content" id="content_container">
+    <div class="tabs">
+        <h2 class="underline" id="library">Library</h2>
+        <h2 class="underline" id="playlists">Playlists</h2>
+        <h2 class="underline" id="scheduler">Scheduler</h2>
+    </div>
+    <div class="content" id="content">
     </div>
 </div>
+
+<div id="media-modal", class="media-modal">
+    <form action="POST">
+        <img src="./rsc/images/pink.jpg">
+        <input type="text" id="media_name">
+        <input type="text" id="media_type">
+        <input type="text" id="media_cover">
+        <button id="media-save">Save</button>
+        <button id="media-delete">Delete</button>
+    </form>
+</div>
+
+
 
 <div class="player-small">
     <p>SongName</p>
@@ -55,7 +68,19 @@
     <input type="range" min="0" max="100" id="volume">
 </div>
 -->
-
+<!--
+<div id="media-upload-modal", class="media-upload-modal">
+    <form action="POST">
+        <img src="./rsc/images/pink.jpg">
+        <input type="text" id="media_name">
+        <input type="text" id="media_type">
+        <input type="text" id="media_cover">
+        <button id="media-save">Save</button>
+        <button id="media-delete">Delete</button>
+        <input type="file" id="file" name="filename">
+    </form>
+</div>
+-->
 <div class="action_button">
     <button id="action">Action</button>
 </div>
@@ -71,164 +96,17 @@
     document.getElementById("scheduler").addEventListener("click", load_scheduler);
     //document.getElementById("play").addEventListener("click", play);
     document.getElementById("pause").addEventListener("click", pause);
-    //document.getElementById("resume").addEventListener("click", resume);
+    // document.getElementById("resume").addEventListener("click", resume);
     document.getElementById("restart").addEventListener("click", restart);
     document.getElementById("back").addEventListener("click", back);
     document.getElementById("backback").addEventListener("click", backback);
     document.getElementById("forward").addEventListener("click", forward);
     document.getElementById("forwardforward").addEventListener("click", forwardforward);
+    var media_modal = document.getElementById("media-modal");
 
-    
-    //Interact with the audio player. 
-
-    async function player(player_command){
-        request_params = {command: player_command}
-        fetch('/api/player',{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            }, 
-            body: JSON.stringify(request_params)
-        }).then(response => {
-            console.log("successfully did the thing you asked leenton")
-        })
-    }
-
-    async function play(){
-        await player("play")
-        //other shit to change the state of the player so we can make the web page more dyanmic. 
-    }
-
-    async function resume(){
-        await player("resume")
-        //other shit to change the state of the player so we can make the web page more dyanmic. 
-    }
-
-    async function pause(){
-        await player("pause")
-        //other shit to change the state of the player so we can make the web page more dyanmic. 
-    }
-    async function restart(){
-        await player("restart")
-        //other shit to change the state of the player so we can make the web page more dyanmic. 
-    }
-    async function back(){
-        await player("back")
-        //other shit to change the state of the player so we can make the web page more dyanmic. 
-    }
-    async function backback(){
-        await player("backback")
-        //other shit to change the state of the player so we can make the web page more dyanmic. 
-    }
-    async function forward(){
-        await player("forward")
-        //other shit to change the state of the player so we can make the web page more dyanmic. 
-    }
-    async function forwardforward(){
-        await player("forwardforward")
-        //other shit to change the state of the player so we can make the web page more dyanmic. 
-    }
-
-    async function load_player(){
-        const resposne = await fetch('/api/test')
-        const result = resposne.json()
-        return result
-    }
-    function getCurrentURL () {
-        return window.location.href
-    }
-
-    async function load_library(){
-        fetch('/api/library',{
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }, 
-        }).then(
-            response => response.json()
-        ).then(
-            data => {
-                //empty out the  content container div, then insert each item we got in our web request.
-                
-                let container = document.getElementById("content_container");
-                container.innerHTML = '';
-                data.media.forEach(item => {
-                    let new_item = document.createElement('div')
-                    new_item.classList.add('item')
-                    new_item.innerHTML = [
-                        `<div class="item-details">
-                            <p>`, item.name, `</p>
-                        </div>
-                        <div class="item-actions">
-                            <p>Play Count:`, item.plays, `</p>
-                            <p>Runtime:`, item.runtime, `</p>
-                            <p>Type:`, item.type, `</p>
-                            <button id="play">Play</button>
-                            <button id="remove">Remove</button>
-                            <button id="edit">Edit</button>
-                        </div>`].join("")
-                    container.appendChild(new_item)
-                })
-            }
-        )
-    }
-    async function load_playlists(){
-        fetch('/api/playlists',{
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }, 
-        }).then(
-            response => response.json()
-        ).then(
-            data => {
-                //empty out the  content container div, then insert each item we got in our web request.
-                
-                let container = document.getElementById("content_container");
-                container.innerHTML = '';
-                data.media_lists.forEach(list => {
-                    let new_list = document.createElement('div')
-                    new_list.classList.add('list')
-                    new_list.innerHTML = [
-                        `<div class="list-details">
-                            <p>`, list.name, `</p>
-                        </div>
-                        <div class="list-actions">
-                            <p>Type:`, list.type, `</p>
-                            <p>Accepts Interupts:`, list.interuptable, `</p>
-                            <button id="play">Play</button>
-                            <button id="remove">Remove</button>
-                            <button id="edit">Edit</button>
-                        </div>`].join("")
-                    container.appendChild(new_list)
-                })
-            }
-        )
-    }
-    async function load_scheduler(){
-        fetch('/api/scheduler',{
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }, 
-        }).then(
-            response => response.json()
-        ).then(
-            data => {
-                //empty out the  content container div, then insert each item we got in our web request.
-                let container = document.getElementById("content_container");
-                container.innerHTML = '<p>Sorry! Nothing here yet!</p>';
-                console.log(data)
-            }
-        )
-    }
-    
-
-
-    console.log("HMP v.0.0.1")
-    load_library()
-
-
+    clear_tabs()
+    console.log("HMP v.0.1.0")
+load_library()
 </script>
 
 </html>

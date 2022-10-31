@@ -1,6 +1,8 @@
+import imp
 from falcon.status_codes import * 
 import json
 from queue import Queue
+from entities.Media import MediaLibrary, MediaItem
 
 def get_player_status() -> dict:
     '''
@@ -21,10 +23,10 @@ def get_library() -> dict:
     pass
 
 class player(object):
-
-    def __init__(self, player_events: Queue, status:Queue) -> None:
+    def __init__(self, player_events: Queue, status:Queue, media_library: MediaLibrary) -> None:
         self.player_event = player_events
         self.status = status
+        self.media_library = media_library
 
     def on_websocket(self, req, ws):
         pass
@@ -34,11 +36,23 @@ class player(object):
         resp.text = json.dumps(())
     
     def on_post(self, req, resp):
-        resp.status =  HTTP_200
         try:
             match ((req.media['command']).lower()):
                 case 'play':
-                    self.player_event.put({'message': 'play', 'data': None})
+                    print(req.media)
+                    
+                    if(req.media["data"]):
+                        if(req.media["data"]["type"] == "media"):
+                            print("HI")
+                            data = self.media_library.get_media_item(req.media["data"]["resouce_id"])
+                            print("noo")
+                        else:
+                            data = self.media_library.get_media_list(req.media["data"]["resouce_id"])
+
+                    else: 
+                        data = None
+                    
+                    self.player_event.put({'message': 'play', 'data': data})
                 case 'pause':
                     self.player_event.put({'message': 'pause', 'data': None})
                 case 'resume':
@@ -53,6 +67,9 @@ class player(object):
                     self.player_event.put({'message': 'jump', 'data': [5000, 'forward']})
                 case 'forwardforward':
                     self.player_event.put({'message': 'jump', 'data': [20000, 'forward']})
+            
+            resp.status =  HTTP_200
             resp.text = json.dumps({"result": "success"})
         except:
+            resp.status = HTTP_500
             resp.text = json.dumps({"result": "failure"})

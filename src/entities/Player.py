@@ -71,6 +71,7 @@ class Player:
         @param distance:int, Integer presenting how many miliseconds you want to move the playhead.
         @param direction:str, String either 'forward' or 'back' to represent which direct you want to move the playhead.
         '''
+        print("jump called")
         if self.current_media:
             distance = distance / self.length
 
@@ -104,7 +105,7 @@ class Player:
         if self.state is PlayerState.Playing:
             self.position = self.media_player.get_position()
 
-        return {
+        status = {
             'state': self.state,
             'position': self.position,
             'volume': self.volume,
@@ -114,6 +115,9 @@ class Player:
             'rank': self.current_media.rank,
             'runtime': self.current_media.runtime
         }
+
+        print(status)
+        return status
 
 
 

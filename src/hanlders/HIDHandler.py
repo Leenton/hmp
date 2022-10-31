@@ -6,8 +6,7 @@ def get_change():
     return 0
 
 def level_controler(player: Player, data_lock):
-    while(True):
-                    
+    while(True):   
         levels_change = get_change()
         if(levels_change < 0):
             player.volume_decrease()
