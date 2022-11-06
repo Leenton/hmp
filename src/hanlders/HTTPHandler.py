@@ -1,14 +1,9 @@
-from pydoc import importfile
 from queue import Queue
-import queue
 from sched import scheduler
 from threading import Lock
-import threading
 import falcon
 from wsgiref.simple_server import make_server
-
-from time import sleep
-
+from falcon_multipart.middleware import MultipartMiddleware
 from endpoints.Player import *
 from endpoints.Config import *
 from endpoints.Library import *
@@ -21,7 +16,7 @@ from entities.Media import MediaLibrary
 
 def start(event_queue: Queue,status_queue: Queue, lock: Lock) -> None:
 
-    handler = falcon.App()
+    handler = falcon.App(middleware=[MultipartMiddleware()])
     with lock:
         media_library = MediaLibrary()
 
@@ -37,5 +32,3 @@ def start(event_queue: Queue,status_queue: Queue, lock: Lock) -> None:
 
     with make_server('',80,handler) as httpd:
         httpd.serve_forever()
-
-#start(queue.Queue(),queue.Queue(), threading.Lock())

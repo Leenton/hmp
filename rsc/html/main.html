@@ -23,8 +23,51 @@
     </div>
 </div>
 
-<div id="media-modal", class="media-modal">
-    <form action="POST">
+<div id="modal" class="modal hidden">
+</div>
+
+<form action="./api/library" method="POST" class="modal-content media-edit disabled" id="media_editor" enctype="multipart/form-data">
+    <label for="media_name">Name</label>
+    <input type="text" name="media_name" id="media_name" value=""/>
+    <label for="media_type">Media type</label>
+    <select id="media_type" name="media_type">
+        <option value="music">Music</option>
+        <option value="podcast">Podcast</option>
+        <option value="weather">Weather</option>
+        <option value="effect">Effect</option>
+    </select>
+    <label for="media_cover">Cover</label>
+    <input type="file" name="media_cover" id="media_cover" accept=".jpg, .png, .jpeg, .gif, .mp3, .wav, .flac" size="536870912">
+    <div class="actions">
+        <button name="req_type" id="media-save" value="save">Save</button>
+        <button name="req_type" id="media-delete" value="delete">Delete</button>
+    </div>
+</form>
+
+
+<form action="./api/library" method="post" class="modal-content media-upload disabled" id="media_upload">
+    <label for="media_name">Name</label>
+    <input type="text" id="media_name">
+    <label for="media_type">Media type</label>
+    <select id="media_type">
+        <option value="music">Music</option>
+        <option value="podcast">Podcast</option>
+        <option value="weather">Weather</option>
+        <option value="effect">Effect</option>
+    </select>
+    <label for="media_cover">Cover</label>
+    <input type="file" id="media_cover">
+    <label for="media_file">File</label>
+    <input type="file" id="media_file">
+    <div class="actions">
+        <button name="req_type" id="media-save" value="new">Upload</button>
+    </div>
+
+</form>
+
+
+<!-- <div id="media-modal", class="media-modal">
+    <form action="./api/library" method="post">
         <img src="./rsc/images/pink.jpg">
         <input type="text" id="media_name">
         <input type="text" id="media_type">
@@ -32,7 +75,7 @@
         <button id="media-save">Save</button>
         <button id="media-delete">Delete</button>
     </form>
-</div>
+</div> -->
 
 
 
@@ -52,6 +95,21 @@
 
 </div>
 
+
+<form action="./api/library" method="POST">
+    <div>
+      <label for="say">What greeting do you want to say?</label>
+      <input name="say" id="say" value="Hi" />
+    </div>
+    <div>
+      <label for="to">Who do you want to say it to?</label>
+      <input name="to" id="to" value="Mom" />
+    </div>
+    <div>
+      <button>Send my greetings</button>
+    </div>
+  </form>
+  
 <!--
 <div class="player-big">
     <p>IMAGE</p>
@@ -85,9 +143,6 @@
     <button id="action">Action</button>
 </div>
 
-
-
-
 <script>
     //colour inversion with a dark mode button, or detector in the player. 
 
@@ -102,11 +157,11 @@
     document.getElementById("backback").addEventListener("click", backback);
     document.getElementById("forward").addEventListener("click", forward);
     document.getElementById("forwardforward").addEventListener("click", forwardforward);
-    var media_modal = document.getElementById("media-modal");
+    document.getElementById("modal").addEventListener("click", close_modal);
 
     clear_tabs()
     console.log("HMP v.0.1.0")
-load_library()
+    load_library()
 </script>
 
 </html>

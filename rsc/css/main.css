@@ -22,10 +22,66 @@ h1.title{
     text-align: center;
 }
 
+.hidden{
+    visibility: hidden; 
+}
+
 .main-container{
     max-width: 1200px;
     margin-inline: auto;
+    padding-inline: 1rem;
 }
+
+/* Modal Rules */
+.modal{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(23, 23, 23, 0.4);
+}
+
+.modal-content{
+    display: flex;
+    flex-direction: column;
+    background-color: #353535;
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, 0);
+    top: 15%;
+    height: 600px;
+    z-index: 1;
+}
+
+.modal-actions{
+    display: grid;
+    width: 100%;
+    gap: 15%;
+    grid-template-columns: 50% 35%;
+}
+
+.modal-actions button{
+    padding: 1rem;
+    background-color: #d5d5d5;
+    opacity: 0.75;
+    font-family: DejaVuSansMonoBold;
+}
+
+.modal-actions button:hover{
+    opacity: 1;
+}
+
+.modal-content.disabled{
+    display: none;
+}
+
+
+.media-editor{
+
+}
+
+/* Tab rules */
 
 .tabs-container{
     padding-inline: 1rem;
@@ -55,25 +111,42 @@ h1.title{
     border-bottom: 4px solid white;
 }
 
+/* Content rules for each tab */
+
 .content{
     margin-top: 4%;
     overflow-y: scroll;
     height: 1000px;
 }
 
-.library_item{
+/* Library rules */
+
+.library-item{
     display: grid;
     width: 100%;
-    grid-template-columns: 40% 10% 20% 10% 10% 10%;
+    grid-template-columns: 40% 15% 15% 15% 15%;
     align-items: center;
     justify-items: center;
 }
 
-.media_name{
+.media-name{
     width: 100%
 }
 
-.library_item:hover{
+.edit{
+    background-color: #d5d5d5;
+    opacity: 0.75;
+    width: 100%;
+    height: 100%;
+    border: none;
+    font-family: DejaVuSansMonoBold;
+}
+
+.edit:hover{
+    opacity: 1;
+}
+
+.library-item:hover{
     background-color: #353535;
     cursor: pointer;
 }   
@@ -84,13 +157,30 @@ h1.title{
     justify-content: space-between;
 }
 
-.hidden{
-    visibility: hidden; 
-}
-
-.library_item:hover .hidden{
+.library-item:hover .hidden{
     visibility: visible;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .player-small{
     border: 3px solid #353535;
@@ -101,18 +191,4 @@ h1.title{
     flex-direction: column;
     width: 30em;
     height: 20rem;
-}
-
-.media-modal{
-    display: None; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }

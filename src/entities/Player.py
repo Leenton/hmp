@@ -115,8 +115,6 @@ class Player:
             'rank': self.current_media.rank,
             'runtime': self.current_media.runtime
         }
-
-        print(status)
         return status
 
 
