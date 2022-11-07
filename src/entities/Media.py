@@ -1,12 +1,10 @@
-
-import imp
 import json
-from os import path
 from os.path import exists
 from enum import Enum
 from hashlib import sha1
 from time import  time
 from tinydb import TinyDB, where
+from HMPConfig import *
 
 class MediaItemType(Enum):
     Music = 'music'
@@ -26,7 +24,7 @@ class MediaListOrder(Enum):
 
 class MediaItem():
 
-    def __init__(self, path ='', name = '', media_id = '', type = 'music', created = '', cover = '', plays = 0 , rank = 1) -> None:
+    def __init__(self, path ='', name = '', media_id = None, type = 'music', created =  None, cover = '', plays = 0 , rank = 1) -> None:
         
         #if a path is not provided, create a blank MediaItem object. 
         if not path:
@@ -57,17 +55,17 @@ class MediaItem():
         if(cover):
             self.cover = cover
         else: 
-            if exists("Directory the the cover from storage" + self.name):
+            if exists("Directory the the cover from storage" + self.name + '.png'):
                 self.cover = self.name
             else: 
                 if(self.type is MediaItemType.Music):
-                    self.cover = 'path to default music icon'
+                    self.cover = DEFAULT_COVERS + MediaItemType.Music.value + '.png'
                 elif(self.type is MediaItemType.Podcast):
-                    self.cover = 'path to default podcast icon'
+                    self.cover = DEFAULT_COVERS + MediaItemType.Podcast.value  + '.png'
                 elif(self.type is MediaItemType.Weather):
-                    self.cover = 'path to default weather icon'
+                    self.cover = DEFAULT_COVERS + MediaItemType.Weather.value  + '.png'
                 elif(self.type is MediaItemType.Effect):
-                    self.cover = 'path to default effect icon'
+                    self.cover = DEFAULT_COVERS + MediaItemType.Effect.value  + '.png'
 
     def serialise(self, as_string = False) -> dict | str:
         serialised = {
@@ -210,7 +208,6 @@ class MediaLibrary():
         self.lists = TinyDB('media_lists.json')
 
     def get_media_item(self, object_id: str) -> MediaItem:
-
         media_item = (list(self.libaray.search(where('id') == object_id)))[0]
         return MediaItem(
             media_item['path'],
@@ -225,14 +222,36 @@ class MediaLibrary():
     def insert_media_item(self, item: MediaItem) -> None:
         self.libaray.insert(item.serialise())
     
-    def update_media_item(self, item: MediaItem) -> None:
-        self.libaray.update()
+    def update_media_item(self, updated_item: MediaItem) -> None:
+        item = self.get_media_item(updated_item.id)
     
-    def remove_media_item(self, item: MediaItem) -> None:
-        self.libaray.remove()
+        if(item.name != updated_item.name and updated_item.name):
+            item.name = updated_item.name
+        
+        if(item.type != updated_item.type and updated_item.type):
+            item.type = updated_item.type
+
+        if(item.cover != updated_item.cover and updated_item.cover):
+            item.cover = updated_item.cover
+
+        if(item.plays != updated_item.plays and updated_item.plays):
+            item.plays = updated_item.plays
+        
+        if(item.rank != updated_item.rank and updated_item.rank):
+            item.rank = updated_item.rank
+
+        self.remove_media_item(item.id)
+        self.insert_media_item(item)
+    
+    def remove_media_item(self, item: MediaItem | str) -> None:
+        if(isinstance(item, MediaItem)):
+            item = item.id
+        media_item = (list(self.libaray.search(where('id') == item)))[0]
+        self.libaray.remove(media_item)
 
     def get_media_list(self, object_id: str) -> MediaList:
         media_list = (list(self.lists.search(where('id') == object_id)))[0]
+        
         return MediaList(
             media_list['name'],
             media_list['id'],
@@ -250,10 +269,3 @@ class MediaLibrary():
 
     def remove_media_list(self, media_list: MediaList) -> None:
         self.lists.remove()
-
-
-# library = MediaLibrary()
-
-# thing = library.get_media_list('123edasd21VA')
-# for thing in library.get_media_list('123edasd21VA'):
-#     print(library.get_media_item(thing).type)
