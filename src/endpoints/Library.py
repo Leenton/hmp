@@ -8,7 +8,7 @@ class library(object):
 
     def __init__(self, media_library: MediaLibrary) -> None:
         self.media_library = media_library
-
+    
     def on_get(self, req, resp):
         resp.status = HTTP_200
         resp.content_type = 'application/json'
