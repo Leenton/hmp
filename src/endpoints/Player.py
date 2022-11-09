@@ -1,26 +1,7 @@
-import imp
 from falcon.status_codes import * 
 import json
 from queue import Queue
 from entities.Media import MediaLibrary, MediaItem
-
-def get_player_status() -> dict:
-    '''
-    Returns the current state of the player. 
-    @return dict with keys:
-    'playing':Boolean,
-    'position':float, Percentage of total media played.
-    'length':int, Length of current media being played in miliseconds.
-    'volume':int, Interger between 0 and 100 (inclusive) where 0 represents muted, and 100 is 0dB.
-    '''
-    # player_event_queue.put({'command': 'status', 'args': None})
-    # return player_status_queue.queue[0]
-    pass
-
-def get_library() -> dict:
-    
-    
-    pass
 
 class player(object):
     def __init__(self, player_events: Queue, status:Queue, media_library: MediaLibrary) -> None:
@@ -28,9 +9,9 @@ class player(object):
         self.status = status
         self.media_library = media_library
 
-    async def on_websocket(self, req, ws):
-        print("fuck")
-        pass
+    # def on_websocket(self, req, ws):
+    #     print("fuck")
+    #     pass
 
     def on_get(self, req,  resp):
         resp.status = HTTP_200
