@@ -1,7 +1,10 @@
 from queue import Queue
 from sched import scheduler
 from threading import Lock
-import falcon
+from falcon import App
+from falcon.asgi.request import Request
+from falcon.asgi.ws import WebSocket
+import falcon.media
 from wsgiref.simple_server import make_server
 from falcon_multipart.middleware import MultipartMiddleware
 from endpoints.Player import *
@@ -14,9 +17,21 @@ from endpoints.Scheduler import *
 from entities.Media import MediaLibrary
 
 
+class SomeMiddleware:
+    async def process_request_ws(self, req: Request, ws: WebSocket):
+        # This will be called for the HTTP request that initiates the
+        #   WebSocket handshake before routing.
+        pass
+
+    async def process_resource_ws(self, req: Request, ws: WebSocket, resource, params):
+        # This will be called for the HTTP request that initiates the
+        #   WebSocket handshake after routing (if a route matches the
+        #   request).
+        pass
+
 def start(event_queue: Queue,status_queue: Queue, lock: Lock) -> None:
 
-    handler = falcon.App(middleware=[MultipartMiddleware()])
+    handler = App(middleware=[MultipartMiddleware(), SomeMiddleware()])
     with lock:
         media_library = MediaLibrary()
 

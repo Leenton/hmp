@@ -20,33 +20,30 @@
     </div>
     <div class="content" id="content">
     </div>
-    <div class="action-pane">
-        <div class="action-media-details">
-            <button class="action-button" id="action">Action</button>
-            <div class="action-media-info-restart">
-                <p class="action-media-name"> SongName</p>
-                <img id="restart" src="./rsc/images/100.png" class="action-media-restart">
-            </div>
-        </div>
-        <div class="player-progress-bar">
-            <div id="progress-bar"></div>
-        </div>
-        <div class="player">
-            <button id="backback"><<</button>
-            <button id="back"><</button>
-            <button id="pause">Play/Resume</button>
-            <button id="forward">></button>
-            <button id="forwardforward">>></button>
-            <!-- <div class="progressbar">
-                <p>[========&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]</p>
-            </div> -->
-            <!-- <input type="range" min="0" max="100" id="volume"> -->
-        </div>
+</div>
+
+<div class="action-pane">
+    <div class="action-media-details">
+        <button class="action-button" id="action">Action</button>
+        <p class="action-media-name"> Jack Strauber - Electrify my Heart</p>
+        <input type="range" min="0" max="100" id="volume">
+    </div>
+    <div id="restart" class="player-progress-bar">
+        <div id="progress-bar"></div>
+    </div>
+    <div class="player">
+        <button id="backback"><<</button>
+        <button id="back"><</button>
+        <button onclick="pause_player()" id="pause">Pause</button>
+        <button id="forward">></button>
+        <button id="forwardforward">>></button>
     </div>
 </div>
 
 <div id="modal" class="modal hidden">
 </div>
+
+
 
 
 <script>
@@ -56,21 +53,20 @@
     document.getElementById("playlists").addEventListener("click", load_playlists);
     document.getElementById("scheduler").addEventListener("click", load_scheduler);
     //document.getElementById("play").addEventListener("click", play);
-    document.getElementById("pause").addEventListener("click", pause);
-    // document.getElementById("resume").addEventListener("click", resume);
-    document.getElementById("restart").addEventListener("click", restart);
-    document.getElementById("back").addEventListener("click", back);
-    document.getElementById("backback").addEventListener("click", backback);
-    document.getElementById("forward").addEventListener("click", forward);
-    document.getElementById("forwardforward").addEventListener("click", forwardforward);
+    document.getElementById("restart").addEventListener("dblclick", restart_player);
+    document.getElementById("back").addEventListener("click", back_player);
+    document.getElementById("backback").addEventListener("click", backback_player);
+    document.getElementById("forward").addEventListener("click", forward_player);
+    document.getElementById("forwardforward").addEventListener("click", forwardforward_player);
     document.getElementById("modal").addEventListener("click", close_modal);
 
-    let colours = ['','','','','','','','','','','','','','']
+    let colours = ['#0C93CD','#87BA23','#FBD537','#EB945F','#E04A68','#98399A','#8635d5','#f24982','#f98617','#f9c823','#2dc574','#006cdc']
     var colour = colours[Math.floor(Math.random()*colours.length)]
-    
+
     clear_tabs()
     console.log("HMP v.0.1.0")
     load_library()
+    load_player_status()
 </script>
 
 </html>

@@ -1,5 +1,10 @@
+//Update the audio player with data being streamed by the server
 
+const audio_player_events = new EventSource("./api/player");
 
+audio_player_events.onmessage = (event) => {
+    console.log(event)
+}
 
 //Interact with the audio player. 
 
@@ -30,37 +35,44 @@ async function play(type, id){
     //other shit to change the state of the player so we can make the web page more dyanmic. 
 }
 
-async function resume(){
-    console.log("stuff")
+async function resume_player(){
+    resume =  document.getElementById("resume")
+    resume.setAttribute("onClick", "javascript: pause_player();")
+    resume.innerHTML = "Pause"
+    resume.id = "pause"
     await player("resume")
-    //other shit to change the state of the player so we can make the web page more dyanmic. 
 }
 
-async function pause(){
+async function pause_player(){
+    pause =  document.getElementById("pause")
+    pause.setAttribute("onClick", "javascript: resume_player();")
+    pause.innerHTML = "Resume"
+    pause.id = "resume"
     await player("pause")
-    //other shit to change the state of the player so we can make the web page more dyanmic. 
 }
-async function restart(){
+async function restart_player(){
     await player("restart")
-    //other shit to change the state of the player so we can make the web page more dyanmic. 
 }
-async function back(){
+async function back_player(){
     await player("back")
     //other shit to change the state of the player so we can make the web page more dyanmic. 
 }
-async function backback(){
+async function backback_player(){
     await player("backback")
     //other shit to change the state of the player so we can make the web page more dyanmic. 
 }
-async function forward(){
+async function forward_player(){
     await player("forward")
     //other shit to change the state of the player so we can make the web page more dyanmic. 
 }
-async function forwardforward(){
+async function forwardforward_player(){
     await player("forwardforward")
     //other shit to change the state of the player so we can make the web page more dyanmic. 
 }
 
+function load_player_status(){
+    console.log("NO PLAYER FOR YOU BUDDY!");
+}
 function close_modal(){
     modal.classList.add("hidden")
     for (let modal_action of document.querySelectorAll(".modal-content:not(.disabled)")){

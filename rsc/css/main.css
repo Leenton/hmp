@@ -35,7 +35,6 @@ h1.title{
     max-width: 1200px;
     margin-inline: auto;
     padding-inline: 1rem;
-    min-height: 700px;
 }
 
 /* Modal Rules */
@@ -208,6 +207,11 @@ img{
 .action-pane{
     position: absolute;
     bottom: 0;
+    left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto;
+    max-width: 1200px;
 }
 
 .action-media-details{
@@ -216,6 +220,7 @@ img{
     margin-bottom: 1rem;
     align-items: center;
     justify-items: center;
+    padding-inline: 1rem;
 }
 
 /* Action button */
@@ -239,8 +244,9 @@ img{
 }
 
 .action-media-name{
-    font-size: 1.25rem;
+    font-size: 1rem;
     border-top: 2px solid #1f1f1f;
+    font-family: DejaVuSansMonoBold;
 }
 
 .action-media-name:hover{
@@ -265,7 +271,11 @@ img{
 .player-progress-bar{
     width: 100%;
     height: 1rem;
-    background-color: blue;
+    background-color: rgb(245, 210, 13);
+}
+
+.player-progress-bar:hover{
+    cursor: pointer;
 }
 
 #progress-bar{
@@ -276,26 +286,24 @@ img{
 .player{
     display: grid;
     grid-template-columns: 20% 20% 20% 20% 20%;
-    width: 1200px;
-    height: 7.5rem;
+    width: 100%;
+    height: 7rem;
 }
 
-#backback{
-
+.player button{
+    background-color: #1f1f1f;
+    width: 100%;
+    border: none;
+    font-family: DejaVuSansMonoBold;
+    font-size: 1rem;
+    color: white;
+    height: 7rem;
 }
 
-#back{
-
-}
-#pause{
-
-}
-
-#forward{
-
-}
-
-#forwardforward{
-
+.player button:hover{
+    background: #d5d5d5;
+    color: black;
+    /* border-top: 0px solid #1f1f1f;
+} */
 }
 /* On click of title, show the stats with a cover image for what is playing */

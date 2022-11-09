@@ -28,12 +28,14 @@ class player(object):
         self.status = status
         self.media_library = media_library
 
-    def on_websocket(self, req, ws):
+    async def on_websocket(self, req, ws):
+        print("fuck")
         pass
 
     def on_get(self, req,  resp):
         resp.status = HTTP_200
         resp.text = json.dumps(())
+        print("wrong fuck")
     
     def on_post(self, req, resp):
         try:
