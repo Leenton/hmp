@@ -20,29 +20,34 @@
     </div>
     <div class="content" id="content">
     </div>
+    <div class="action-pane">
+        <div class="action-media-details">
+            <button class="action-button" id="action">Action</button>
+            <div class="action-media-info-restart">
+                <p class="action-media-name"> SongName</p>
+                <img id="restart" src="./rsc/images/100.png" class="action-media-restart">
+            </div>
+        </div>
+        <div class="player-progress-bar">
+            <div id="progress-bar"></div>
+        </div>
+        <div class="player">
+            <button id="backback"><<</button>
+            <button id="back"><</button>
+            <button id="pause">Play/Resume</button>
+            <button id="forward">></button>
+            <button id="forwardforward">>></button>
+            <!-- <div class="progressbar">
+                <p>[========&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]</p>
+            </div> -->
+            <!-- <input type="range" min="0" max="100" id="volume"> -->
+        </div>
+    </div>
 </div>
 
 <div id="modal" class="modal hidden">
 </div>
 
-<div class="player-small">
-    <p>SongName</p>
-    <p>Song Play Count</p>
-    <button id="pause">Play/Resume</button>
-    <button id="restart">Restart</button>
-    <button id="back"><</button>
-    <button id="backback"><<</button>
-    <button id="forward">></button>
-    <button id="forwardforward">>></button>
-    <div class="progressbar">
-        <p>[========&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]</p>
-    </div>
-    <input type="range" min="0" max="100" id="volume">
-</div>
-
-<div class="action_button">
-    <button id="action">Action</button>
-</div>
 
 <script>
     //colour inversion with a dark mode button, or detector in the player. 
@@ -60,6 +65,9 @@
     document.getElementById("forwardforward").addEventListener("click", forwardforward);
     document.getElementById("modal").addEventListener("click", close_modal);
 
+    let colours = ['','','','','','','','','','','','','','']
+    var colour = colours[Math.floor(Math.random()*colours.length)]
+    
     clear_tabs()
     console.log("HMP v.0.1.0")
     load_library()

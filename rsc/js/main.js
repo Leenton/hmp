@@ -183,24 +183,22 @@ function load_media_modal(input){
     media_editor_modal.action = './api/library'
     media_editor_modal.method = 'POST'
     media_editor_modal.enctype = 'multipart/form-data'
-    media_editor_modal.classList.add('modal-content','media-edit')
+    media_editor_modal.classList.add('modal-content','media-edit-modal')
     media_editor_modal.id = 'media_editor'
     let inner = [`
         <input type="hidden" name="media_id" value="`, item['id'] ,`">
-        <div class="media-item-image">
+        <div class="media-item-details">
             <div class="media-cover-image">
                 <img src='./rsc/images/pink.jpg'>
             </div>
-            <div>
+            <div class="media-item-stats">
                 <p>Plays: `, item['plays'] ,`</p>
                 <p>Runtime: `, item['runtime'] ,`</p>
                 <p>Created: `, (new Date(parseInt(parseFloat(item['created'] * 1000)))).toLocaleDateString("en-GB") ,`</p>
             </div>
         </div>
         <div class="modal-options">
-            <label for="media_name">Name</label>
             <input type="text" autocomplete="off" name="media_name" id="media_name" value="`, item['name'],`"/>
-            <label for="media_type">Media type</label>
             <select id="media_type" name="media_type">
                 <option value="music">Music</option>
                 <option value="podcast">Podcast</option>

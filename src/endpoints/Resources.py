@@ -17,6 +17,8 @@ class resources(object):
                 resp.content_type = 'image/jpg'
             case 'png':
                 resp.content_type = 'image/png'
+            case 'svg':
+                resp.content_type = 'image/svg+xml'
             case 'gif':
                 resp.content_type = 'image/gif'
             case 'ttf':
